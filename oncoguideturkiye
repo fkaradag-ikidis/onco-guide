@@ -1,0 +1,1894 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <title>OncoGuide - Kanser Genetik Test Rehberi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #333; line-height: 1.6; overflow-x: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 24px; font-weight: 700; }
+        .header p { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.3); margin-top: 10px; }
+        .progress-fill { height: 100%; background: white; transition: width 0.3s ease; }
+        .container { padding: 16px; padding-bottom: 100px; }
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .step-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .step-number { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; font-size: 18px; }
+        .step-title { font-size: 20px; font-weight: 700; color: #1a1a1a; }
+        .step-subtitle { font-size: 14px; color: #666; margin-top: 4px; }
+        .option { background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; }
+        .option:active { transform: scale(0.98); }
+        .option.selected { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: transparent; }
+        .option-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+        .option-title { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+        .option-desc { font-size: 13px; opacity: 0.8; line-height: 1.4; }
+        .option-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .tag { background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+        .option.selected .tag { background: rgba(255,255,255,0.2); color: white; }
+        .category-title { font-size: 14px; font-weight: 700; color: #667eea; margin: 20px 0 12px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .lab-option { background: white; border: 2px solid #e9ecef; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; position: relative; }
+        .lab-option:active { transform: scale(0.98); }
+        .lab-option.selected { border-color: #667eea; background: #f0f4ff; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2); }
+        .lab-option.selected::after { content: "✓"; position: absolute; top: 10px; right: 10px; background: #667eea; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; }
+        .lab-name { font-weight: 700; font-size: 17px; color: #1a1a1a; margin-bottom: 4px; }
+        .lab-option.selected .lab-name { color: #667eea; }
+        .lab-loc { font-size: 13px; color: #666; margin-bottom: 8px; }
+        .lab-tests { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+        .lab-test-tag { background: #e3f2fd; color: #1976d2; padding: 3px 8px; border-radius: 12px; font-size: 11px; }
+        .lab-option.selected .lab-test-tag { background: #667eea; color: white; }
+        .lab-features { font-size: 12px; color: #888; }
+        .lab-features span { margin-right: 10px; }
+        .sample-box { background: #f8f9fa; border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 2px solid #e9ecef; }
+        .sample-title { font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; font-size: 15px; color: #333; }
+        .sample-title span { margin-right: 8px; font-size: 20px; }
+        .sample-list { list-style: none; font-size: 14px; }
+        .sample-list li { padding: 6px 0; padding-left: 24px; position: relative; color: #555; }
+        .sample-list li:before { content: "✓"; position: absolute; left: 0; color: #4caf50; font-weight: bold; }
+        .alert { background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 8px; padding: 14px; margin: 16px 0; font-size: 13px; color: #856404; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); transition: all 0.3s ease; }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(102, 126, 234, 0.5); }
+        .btn-secondary { background: white; color: #667eea; border: 2px solid #667eea; box-shadow: none; }
+        .btn-secondary:hover { background: #f0f4ff; }
+        .btn-back { background: transparent; color: #666; border: none; padding: 12px; font-size: 14px; display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 12px; cursor: pointer; transition: all 0.2s; }
+        .btn-back:hover { color: #667eea; }
+        .hidden { display: none !important; }
+        .treatment-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .treatment-title { font-weight: 700; font-size: 16px; color: #667eea; margin-bottom: 10px; display: flex; align-items: center; }
+        .treatment-title span { margin-right: 8px; }
+        .treatment-list { list-style: none; }
+        .treatment-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; display: flex; align-items: start; }
+        .treatment-list li:last-child { border-bottom: none; }
+        .treatment-list li:before { content: "💊"; margin-right: 8px; font-size: 12px; }
+        .warning-box { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-radius: 16px; padding: 20px; margin-top: 20px; border: 2px solid #ce93d8; }
+        .warning-title { font-weight: 700; color: #6a1b9a; margin-bottom: 10px; display: flex; align-items: center; }
+        .warning-title span { margin-right: 8px; font-size: 20px; }
+        .warning-text { font-size: 14px; color: #4a148c; line-height: 1.6; }
+        .selected-lab-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .selected-lab-info h4 { font-size: 14px; opacity: 0.9; margin-bottom: 4px; }
+        .selected-lab-info .lab-name-big { font-size: 20px; font-weight: 700; }
+        .footer { text-align: center; padding: 30px 20px; color: #999; font-size: 12px; }
+        .search-box { width: 100%; padding: 12px 16px; border: 2px solid #e9ecef; border-radius: 12px; font-size: 16px; margin-bottom: 16px; transition: all 0.2s; }
+        .search-box:focus { outline: none; border-color: #667eea; box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1); }
+        .fade-in { animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧬 OncoGuide</h1>
+        <p>Kanser Genetik Test Rehberi - Kapsamlı Kanser Türleri</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="step1" class="step-content">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div>
+                        <div class="step-title">Durumunuz</div>
+                        <div class="step-subtitle">Hangi aşamadasınız?</div>
+                    </div>
+                </div>
+                <div class="option" onclick="selectStage('risk')">
+                    <span class="option-icon">⚠️</span>
+                    <div class="option-title">Kanser Riski Taşıyorum</div>
+                    <div class="option-desc">Ailede kanser öyküsü var, henüz tanı konulmadı</div>
+                    <div class="option-tags"><span class="tag">Aile Öyküsü</span><span class="tag">Tarama</span></div>
+                </div>
+                <div class="option" onclick="selectStage('diagnosed')">
+                    <span class="option-icon">🔬</span>
+                    <div class="option-title">Kanser Tanım Var</div>
+                    <div class="option-desc">Tedavi planlaması için genetik test gerekiyor</div>
+                    <div class="option-tags"><span class="tag">Tedavi</span><span class="tag">Hedefe Yönelik</span></div>
+                </div>
+            </div>
+        </div>
+        <div id="step2" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div>
+                        <div class="step-title">Kanser Türü</div>
+                        <div class="step-subtitle">Hangi kanser için test yapılacak?</div>
+                    </div>
+                </div>
+                <input type="text" class="search-box" id="cancerSearch" placeholder="Kanser türü ara..." onkeyup="filterCancers()">
+                <div id="cancerOptions"></div>
+                <button class="btn btn-back" onclick="goBack(1)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step3" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div>
+                        <div class="step-title">Test Türü</div>
+                        <div class="step-subtitle" id="testSubtitle">Test amacını seçin</div>
+                    </div>
+                </div>
+                <div id="testOptions"></div>
+                <button class="btn btn-back" onclick="goBack(2)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step4" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div>
+                        <div class="step-title">Laboratuvar Seçimi</div>
+                        <div class="step-subtitle">Testi hangi merkeze göndereceksiniz?</div>
+                    </div>
+                </div>
+                <div id="labOptions"></div>
+                <button class="btn" id="continueBtn" onclick="goToSample()" disabled>Devam Et →</button>
+                <button class="btn btn-back" onclick="goBack(3)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step5" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div>
+                        <div class="step-title">Numune Hazırlama</div>
+                        <div class="step-subtitle">Seçilen laboratuvar için talimatlar</div>
+                    </div>
+                </div>
+                <div id="selectedLabDisplay"></div>
+                <div id="sampleInstructions"></div>
+                <div class="alert" id="sampleAlert"></div>
+                <button class="btn" onclick="goToResults()">Sonuçları Gör →</button>
+                <button class="btn btn-back" onclick="goBack(4)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step6" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div>
+                        <div class="step-title">Sonuç ve Tedavi</div>
+                        <div class="step-subtitle">Olası bulgular ve yaklaşımlar</div>
+                    </div>
+                </div>
+                <div id="treatmentResults"></div>
+                <div class="warning-box">
+                    <div class="warning-title"><span>👨‍⚕️</span>Genetik Danışmanlık Şart</div>
+                    <div class="warning-text">Test sonuçlarınız mutlaka bir <strong>Tıbbi Genetik Uzmanı</strong> veya <strong>Onkolog</strong> tarafından değerlendirilmelidir.</div>
+                </div>
+                <button class="btn" onclick="resetApp()">🔄 Yeni Rehberlik</button>
+                <button class="btn btn-back" onclick="goBack(5)">← Geri Dön</button>
+            </div>
+        </div>
+        <div class="footer">
+            <p>⚠️ Bu uygulama bilgilendirme amaçlıdır.</p>
+            <p>Tıbbi tavsiye yerine geçmez.</p>
+            <p style="margin-top: 10px;">© 2025 OncoGuide Türkiye - Kapsamlı Kanser Rehberi</p>
+        </div>
+    </div>
+    <script>
+        let state = { stage: null, cancer: null, test: null, lab: null };
+        let selectedLabId = null;
+        
+        const cancers = {
+            // MEME KANSERLERİ
+            breast: { 
+                name: "Meme Kanseri", 
+                icon: "🎀", 
+                category: "Meme", 
+                germline: ["BRCA1", "BRCA2", "PALB2", "TP53", "CHEK2", "ATM", "NBN", "BARD1", "RAD51C", "RAD51D"], 
+                somatic: ["PIK3CA", "HER2", "ESR1", "AKT1", "PTEN", "NF1", "GATA3", "MAP3K1", "CDH1"], 
+                treatments: { 
+                    "PIK3CA Mutant": "Alpelisib + Fulvestrant",
+                    "HER2 Pozitif": "Trastuzumab + Pertuzumab + Docetaxel",
+                    "ESR1 Mutant": "Elacestrant (oral SERD)",
+                    "BRCA1/2 Somatic": "PARP İnhibitörleri (Olaparib, Talazoparib)",
+                    "AKT1 Mutant": "Capivasertib + Fulvestrant",
+                    "gBRCA Mutant": "Olaparib, Talazoparib",
+                    "HR+/HER2-": "Palbociklib, Ribociklib, Abemaciklib",
+                    "TNBC PD-L1+": "Pembrolizumab + Kemoterapi"
+                } 
+            },
+            breast_male: { 
+                name: "Erkek Meme Kanseri", 
+                icon: "🎀", 
+                category: "Meme", 
+                germline: ["BRCA1", "BRCA2", "CHEK2", "PALB2"], 
+                somatic: ["PIK3CA", "HER2", "ESR1", "AR"], 
+                treatments: { 
+                    "BRCA Mutant": "PARP İnhibitörleri",
+                    "HER2 Pozitif": "Trastuzumab bazlı rejimler",
+                    "AR Pozitif": "Bikalutamid (araştırma aşamasında)"
+                } 
+            },
+            
+            // JINEKOLOJIK KANSERLER
+            ovarian: { 
+                name: "Yumurtalık (Over) Kanseri", 
+                icon: "⚪", 
+                category: "Jinekolojik", 
+                germline: ["BRCA1", "BRCA2", "RAD51C", "RAD51D", "BRIP1", "PALB2", "TP53", "STK11"], 
+                somatic: ["BRCA1", "BRCA2", "HRD", "TP53", "PIK3CA", "KRAS", "NRAS", "NF1"], 
+                treatments: { 
+                    "BRCA Mutant": "Olaparib, Niraparib, Rucaparib",
+                    "HRD Pozitif": "PARP İnhibitörleri (bakım tedavisi)",
+                    "MSI-H/dMMR": "Pembrolizumab, Dostarlimab",
+                    "Platin Duyarlı": "PARP İnhibitörleri",
+                    "FRα Yüksek": "Mirvetuximab soravtansine"
+                } 
+            },
+            cervical: { 
+                name: "Rahim Ağzı (Serviks) Kanseri", 
+                icon: "🔴", 
+                category: "Jinekolojik", 
+                germline: [], 
+                somatic: ["PIK3CA", "PTEN", "KRAS", "EGFR", "FGFR3", "ERBB2", "TP53"], 
+                treatments: { 
+                    "PD-L1+ (CPS≥1)": "Pembrolizumab + Kemoterapi ± Bevacizumab",
+                    "MSI-H/dMMR": "Pembrolizumab",
+                    "TMB-Yüksek": "Pembrolizumab",
+                    "EGFR Fokal": "Cetuximab (araştırma)",
+                    "NTRK Füzyon": "Larotrectinib, Entrectinib"
+                } 
+            },
+            endometrial: { 
+                name: "Rahim İçi (Endometriyum) Kanseri", 
+                icon: "🟠", 
+                category: "Jinekolojik", 
+                germline: ["MLH1", "MSH2", "MSH6", "PMS2", "EPCAM"], 
+                somatic: ["PTEN", "PIK3CA", "KRAS", "CTNNB1", "ARID1A", "TP53", "POLE", "MSI"], 
+                treatments: { 
+                    "MSI-H/dMMR": "Pembrolizumab, Dostarlimab (1. hat)",
+                    "POLE Ultra-mutant": "İyi prognoz, immünoterapi duyarlı",
+                    "HER2 Pozitif": "Trastuzumab + Karboplatin/Paklitaksel",
+                    "p53 Mutant": "Kemoterapi (düşük immünoterapi yanıtı)",
+                    "NSMP (No Specific Molecular Profile)": "Hormon tedavisi (progestinler)"
+                } 
+            },
+            vulvar: { 
+                name: "Vulva Kanseri", 
+                icon: "🔴", 
+                category: "Jinekolojik", 
+                germline: [], 
+                somatic: ["TP53", "PIK3CA", "HRAS", "CDKN2A", "EGFR"], 
+                treatments: { 
+                    "PD-L1+": "Pembrolizumab",
+                    "EGFR Yüksek": "Cetuximab (araştırma)",
+                    "NTRK Füzyon": "Larotrectinib"
+                } 
+            },
+            vaginal: { 
+                name: "Vajina Kanseri", 
+                icon: "🔴", 
+                category: "Jinekolojik", 
+                germline: [], 
+                somatic: ["HPV", "PIK3CA", "TP53", "KRAS"], 
+                treatments: { 
+                    "PD-L1+": "Pembrolizumab",
+                    "MSI-H": "Pembrolizumab"
+                } 
+            },
+            gestational_trophoblastic: { 
+                name: "Gestasyonel Trofoblastik Hastalık", 
+                icon: "🤰", 
+                category: "Jinekolojik", 
+                germline: [], 
+                somatic: ["TP53", "KRAS", "BRAF"], 
+                treatments: { 
+                    "Low Risk": "Metotreksat veya Aktinomisin D",
+                    "High Risk": "EMA-CO (Etoposid, Metotreksat, Aktinomisin D, Siklofosfamid, Vinkristin)",
+                    "Platin Duyarlı": "EP/EMA (Etoposid, Sisplatin)"
+                } 
+            },
+            
+            // GASTROINTESTINAL KANSERLER
+            colon: { 
+                name: "Kolon Kanseri", 
+                icon: "🔵", 
+                category: "Gastrointestinal", 
+                germline: ["MLH1", "MSH2", "MSH6", "PMS2", "EPCAM", "APC", "MUTYH", "NTHL1", "POLE", "POLD1"], 
+                somatic: ["KRAS", "NRAS", "BRAF", "PIK3CA", "PTEN", "HER2", "NTRK", "MSI", "TMB"], 
+                treatments: { 
+                    "RAS Wild-type": "Cetuximab veya Panitumumab + FOLFOX/FOLFIRI",
+                    "BRAF V600E": "Encorafenib + Cetuximab veya Panitumumab",
+                    "MSI-H/dMMR": "Pembrolizumab, Nivolumab ± İpilimumab (1. hat)",
+                    "HER2 Pozitif": "Trastuzumab + Pertuzumab veya Lapatinib",
+                    "NTRK Füzyon": "Larotrectinib, Entrectinib",
+                    "KRAS G12C": "Sotorasib + Panitumumab (2. hat)",
+                    "RET Füzyon": "Selpercatinib"
+                } 
+            },
+            rectal: { 
+                name: "Rektum Kanseri", 
+                icon: "🟤", 
+                category: "Gastrointestinal", 
+                germline: ["Lynch"], 
+                somatic: ["KRAS", "NRAS", "BRAF", "MSI", "HER2", "NTRK"], 
+                treatments: { 
+                    "RAS Wild-type": "Cetuximab veya Panitumumab (metastatik)",
+                    "MSI-H": "Neoadjuvan immunoterapi (Pembrolizumab) - pCR sağlayabilir",
+                    "BRAF V600E": "Encorafenib + Cetuximab",
+                    "HER2 Pozitif": "Trastuzumab + Pertuzumab",
+                    "Total Neoadjuvant Therapy (TNT)": "Kemoradyoterapi + Kemoterapi"
+                } 
+            },
+            anal: { 
+                name: "Anal Kanser", 
+                icon: "🟤", 
+                category: "Gastrointestinal", 
+                germline: [], 
+                somatic: ["HPV", "PIK3CA", "KRAS", "TP53", "EGFR"], 
+                treatments: { 
+                    "Standard": "Mitomycin C + 5-FU + Radyoterapi (Nigro protokolü)",
+                    "Cisplatin bazlı": "Cisplatin + 5-FU + Radyoterapi",
+                    "Metastatik PD-L1+": "Pembrolizumab, Nivolumab",
+                    "MSI-H": "Pembrolizumab"
+                } 
+            },
+            gastric: { 
+                name: "Mide Kanseri", 
+                icon: "🟠", 
+                category: "Gastrointestinal", 
+                germline: ["CDH1", "Lynch", "TP53", "BRCA1/2"], 
+                somatic: ["HER2", "PD-L1", "EBV", "MSI", "CLDN18.2", "FGFR2", "MET", "TP53"], 
+                treatments: { 
+                    "HER2 Pozitif": "Trastuzumab + Kemoterapi (1. hat), Trastuzumab Deruxtekan (T-DXd, 2. hat)",
+                    "PD-L1+ (CPS≥5)": "Nivolumab + Kemoterapi (1. hat)",
+                    "MSI-H": "Pembrolizumab (1. hat)",
+                    "CLDN18.2+": "Zolbetuximab + Kemoterapi (1. hat)",
+                    "EBV+": "Pembrolizumab (yüksek yanıt oranı)",
+                    "FGFR2 Füzyon": "Bemarituzumab (FGFR2b overekspresyonu)",
+                    "MET Amplifikasyon": "Kemoterapi + anti-MET ajanlar"
+                } 
+            },
+            gej: { 
+                name: "Gastroözofageal Bileşke (GEJ)", 
+                icon: "🟠", 
+                category: "Gastrointestinal", 
+                germline: [], 
+                somatic: ["HER2", "PD-L1", "MSI", "EBV", "CLDN18.2"], 
+                treatments: { 
+                    "HER2 Pozitif": "Trastuzumab + Kemoterapi, T-DXd (2. hat)",
+                    "PD-L1+": "Pembrolizumab + Kemoterapi",
+                    "MSI-H": "Pembrolizumab",
+                    "CLDN18.2+": "Zolbetuximab + Kemoterapi"
+                } 
+            },
+            esophageal: { 
+                name: "Özofagus (Yemek Borusu) Kanseri", 
+                icon: "🟠", 
+                category: "Gastrointestinal", 
+                germline: [], 
+                somatic: ["TP53", "PIK3CA", "PD-L1", "EGFR", "HER2", "NTRK"], 
+                treatments: { 
+                    "Skuamöz Hücreli": "Pembrolizumab + Kemoterapi (1. hat), Cemiplimab (1. hat)",
+                    "Adenokarsinom": "Nivolumab + Kemoterapi, Pembrolizumab + Kemoterapi",
+                    "HER2 Pozitif": "Trastuzumab + Kemoterapi (adenokarsinom)",
+                    "Definitif Kemoradyoterapi": "Karboplatin + Paklitaksel + Radyoterapi (CROSS rejimi)"
+                } 
+            },
+            pancreatic: { 
+                name: "Pankreas Kanseri (Duktal Adenokarsinom)", 
+                icon: "🟣", 
+                category: "Gastrointestinal", 
+                germline: ["BRCA1", "BRCA2", "PALB2", "CDKN2A", "Lynch", "ATM", "TP53"], 
+                somatic: ["KRAS", "TP53", "CDKN2A", "SMAD4", "BRCA1/2", "ATM", "PALB2"], 
+                treatments: { 
+                    "BRCA/PALB2 Mutant": "Olaparib (bakım), Platin bazlı kemoterapi (1. hat)",
+                    "MSI-H/dMMR": "Pembrolizumab",
+                    "NTRK Füzyon": "Larotrectinib, Entrectinib",
+                    "Resektabl": "FOLFIRINOX veya Gemcitabin + Nab-paklitaksel (neoadjuvan/adjuvan)",
+                    "Borderline Resektabl": "FOLFIRINOX (neoadjuvan)",
+                    "gBRCA Mutant": "Olaparib bakım tedavisi (POLO çalışması)"
+                } 
+            },
+            pancreatic_net: { 
+                name: "Pankreas Nöroendokrin Tümör (PNET)", 
+                icon: "🟣", 
+                category: "Nöroendokrin", 
+                germline: ["MEN1", "VHL", "NF1", "TSC1", "TSC2"], 
+                somatic: ["MEN1", "DAXX", "ATRX", "mTOR", "PIK3CA"], 
+                treatments: { 
+                    "Grade 1-2": "Everolimus, Sunitinib, Somatostatin analogları (Oktreotid, Lanreotid)",
+                    "Grade 3": "Platin + Etoposid (küçük hücreli benzeri)",
+                    "PRRT": "Lutetium-177 DOTATATE (SSTR pozitif)",
+                    "Liver Metastaz": "Embolizasyon (TAE/TACE/RAE), Radyofrekans ablasyon",
+                    "SSTR Pozitif": "Lutetium-177 DOTATATE"
+                } 
+            },
+            hcc: { 
+                name: "Karaciğer Hücreli Karsinom (HCC)", 
+                icon: "🫀", 
+                category: "Hepatobiliyer", 
+                germline: [], 
+                somatic: ["TP53", "CTNNB1", "TERT", "AXIN1", "ARID1A", "FGFR4", "VEGFA"], 
+                treatments: { 
+                    "Early (Barcelona A)": "Reseksiyon, Ablation (RFA/MWA), Transplantasyon (Milan kriterleri)",
+                    "Intermediate (BCLC B)": "TACE (Transarteriyal kemoembolizasyon)",
+                    "Advanced (BCLC C)": "Atezolizumab + Bevacizumab (1. hat), Tremelimumab + Durvalumab",
+                    "2. Hat": "Regorafenib, Cabozantinib, Ramucirumab (AFP≥400), Pembrolizumab",
+                    "FGFR4 Inhibisyonu": "Fisogatinib (araştırma)"
+                } 
+            },
+            cholangiocarcinoma: { 
+                name: "Kolangiokarsinom (Safra Yolu)", 
+                icon: "🫀", 
+                category: "Hepatobiliyer", 
+                germline: [], 
+                somatic: ["IDH1", "IDH2", "FGFR2", "BRAF", "HER2", "MSI", "NTRK", "KRAS", "TP53"], 
+                treatments: { 
+                    "IDH1 Mutant": "Ivosidenib (1. hat sonrası)",
+                    "FGFR2 Füzyon": "Pemigatinib, Infigratinib, Futibatinib (1. hat sonrası)",
+                    "BRAF V600E": "Dabrafenib + Trametinib",
+                    "HER2 Pozitif": "Trastuzumab + Pertuzumab, Trastuzumab Deruxtekan",
+                    "MSI-H/dMMR": "Pembrolizumab, Dostarlimab",
+                    "NTRK Füzyon": "Larotrectinib, Entrectinib",
+                    "Resektabl": "Cerrahi + Adjuvan kapecitabin"
+                } 
+            },
+            gallbladder: { 
+                name: "Safra Kesesi Kanseri", 
+                icon: "🫀", 
+                category: "Hepatobiliyer", 
+                germline: [], 
+                somatic: ["ERBB2", "PIK3CA", "KRAS", "TP53", "CDKN2A"], 
+                treatments: { 
+                    "HER2 Pozitif": "Trastuzumab + Pertuzumab, Trastuzumab Deruxtekan",
+                    "BRAF V600E": "Dabrafenib + Trametinib",
+                    "MSI-H": "Pembrolizumab",
+                    "Resektabl": "Cerrahi + Adjuvan kemoterapi",
+                    "Unresectable": "Gemcitabin + Sisplatin, Durvalumab + Gemcitabin/Sisplatin"
+                } 
+            },
+            
+            // AKCIGER KANSERLERI
+            lung_nsclc: { 
+                name: "Akciğer Kanseri (NSCLC)", 
+                icon: "🫁", 
+                category: "Akciğer", 
+                germline: [], 
+                somatic: ["EGFR", "ALK", "ROS1", "BRAF", "MET", "RET", "KRAS", "PD-L1", "NTRK", "HER2", "PIK3CA"], 
+                treatments: { 
+                    "EGFR Mutant (Exon 19 del/L858R)": "Osimertinib (1. hat)",
+                    "EGFR T790M": "Osimertinib (2. hat)",
+                    "EGFR Exon 20 ins": "Amivantamab + Lazertinib, Mobocertinib",
+                    "ALK Pozitif": "Alectinib (1. hat), Brigatinib, Lorlatinib",
+                    "ROS1 Pozitif": "Entrectinib, Crizotinib, Repotrectinib",
+                    "BRAF V600E": "Dabrafenib + Trametinib",
+                    "MET Exon 14 Skipping": "Capmatinib, Tepotinib",
+                    "RET Füzyon": "Selpercatinib, Pralsetinib",
+                    "KRAS G12C": "Sotorasib, Adagrasib",
+                    "NTRK Füzyon": "Larotrectinib, Entrectinib",
+                    "HER2 Mutant": "Trastuzumab Deruxtekan (T-DXd)",
+                    "PD-L1 ≥50%": "Pembrolizumab tek başına veya + kemoterapi",
+                    "PD-L1 1-49%": "Pembrolizumab + kemoterapi veya tek başına"
+                } 
+            },
+            lung_sclc: { 
+                name: "Akciğer Kanseri (SCLC)", 
+                icon: "🫁", 
+                category: "Akciğer", 
+                germline: [], 
+                somatic: ["TP53", "RB1", "MYC", "NOTCH"], 
+                treatments: { 
+                    "Extensive Stage": "Atezolizumab veya Durvalumab + Etoposid/Karboplatin",
+                    "Limited Stage": "Kemoradyoterapi (Etoposid/Karboplatin + Göğüs radyoterapisi)",
+                    "Prophylaktik Kraniyal İrradyasyon (PCI)": "Tam yanıt veren hastalarda",
+                    "Relapsed": "Lurbinectedin, Topotecan, Temozolomide",
+                    "DLL3 Pozitif": "Tarlatamab (BiTE, 2. hat sonrası)"
+                } 
+            },
+            mesothelioma: { 
+                name: "Mezotelyoma (Plevral)", 
+                icon: "🫁", 
+                category: "Akciğer", 
+                germline: ["BAP1"], 
+                somatic: ["BAP1", "NF2", "TP53", "CDKN2A", "SETD2"], 
+                treatments: { 
+                    "Unresectable": "Pembrolizumab + Pemetrexed + Sisplatin (1. hat)",
+                    "Nivolumab + İpilimumab": "CheckMate 743 rejimi",
+                    "Cerrahi Uygun": "EPP (Ekstraplevral pnömonektomi) veya P/D (Plevrektomi/dekortikasyon) + Kemoterapi",
+                    "2. Hat": "Nivolumab veya Pembrolizumab"
+                } 
+            },
+            thymoma: { 
+                name: "Timoma/Timik Karsinom", 
+                icon: "🫁", 
+                category: "Akciğer", 
+                germline: [], 
+                somatic: ["GTF2I", "TP53", "HRAS", "NRAS"], 
+                treatments: { 
+                    "Resektabl": "Cerrahi (thymektomi)",
+                    "Lokal İleri": "CAP (Siklofosfamid, Doksorubisin, Sisplatin) ± Radyoterapi",
+                    "Metastatik": "CAP, PE (Sisplatin, Etoposid), Sunitinib",
+                    "Somatostatin Reseptörü+": "Oktreotid + Prednizon"
+                } 
+            },
+            
+            // UROGENITAL KANSERLER
+            prostate: { 
+                name: "Prostat Kanseri", 
+                icon: "🚹", 
+                category: "Ürogenital", 
+                germline: ["BRCA1", "BRCA2", "HOXB13", "ATM", "CHEK2", "PALB2", "NBN"], 
+                somatic: ["BRCA1/2", "ATM", "CHEK2", "HRR", "AR", "PTEN", "TP53", "RB1", "PIK3CA"], 
+                treatments: { 
+                    "BRCA/HRR Mutant (mCRPC)": "Olaparib, Rucaparib, Niraparib + Abitateron",
+                    "mCRPC (kemoterapi sonrası)": "Olaparib (PROfound çalışması)",
+                    "mCRPC (1. hat)": "Abitateron, Enzalutamid, Apalutamid, Darolutamid",
+                    "nmCRPC (kemokastre)": "Abitateron, Enzalutamid, Apalutamid, Darolutamid",
+                    "Metastatik Hormon Duyarlı": "Doksetaksel veya NHA + ADT",
+                    "MSI-H/dMMR": "Pembrolizumab",
+                    "PSMA Pozitif": "Lutetium-177 PSMA-617 (Pluvicto)",
+                    "PARP + NHA": "Olaparib + Abitateron, Niraparib + Abitateron"
+                } 
+            },
+            testicular: { 
+                name: "Testis Kanseri", 
+                icon: "🚹", 
+                category: "Ürogenital", 
+                germline: [], 
+                somatic: ["KIT", "KRAS", "NRAS", "BRAF", "TP53", "i(12p)"], 
+                treatments: { 
+                    "Seminoma (Good Risk)": "Karboplatin (AUC x 1) veya Radyoterapi",
+                    "Seminoma (Intermediate)": "BEP (Bleomisin, Etoposid, Sisplatin) x 3 veya EP x 4",
+                    "Non-seminoma (Good Risk)": "BEP x 3 veya EP x 4",
+                    "Non-seminoma (Intermediate/Poor)": "BEP x 4 veya VIP (Etoposid, İfosfamid, Sisplatin)",
+                    "Relapsed": "TİP (Paklitaksel, İfosfamid, Sisplatin) + Otolog transplant",
+                    "KİT Mutant": "İmatinib (seminomada)"
+                } 
+            },
+            penile: { 
+                name: "Penis Kanseri", 
+                icon: "🚹", 
+                category: "Ürogenital", 
+                germline: [], 
+                somatic: ["HPV", "PIK3CA", "TP53", "EGFR", "PD-L1"], 
+                treatments: { 
+                    "HPV+": "Pembrolizumab (PD-L1+)",
+                    "EGFR+": "Cetuximab (araştırma)",
+                    "Inguinal Nodal": "Inguinal lenf nodu diseksiyonu",
+                    "Neoadjuvan": "TDF (Doksetaksel, Sisplatin, 5-FU)"
+                } 
+            },
+            renal_cell: { 
+                name: "Böbrek Hücreli Karsinom (RCC)", 
+                icon: "🫘", 
+                category: "Ürogenital", 
+                germline: ["VHL", "BHD (FLCN)", "HPRC (MET)", "FH"], 
+                somatic: ["VHL", "PBRM1", "BAP1", "MET", "FH", "SETD2", "KDM5C"], 
+                treatments: { 
+                    "Clear Cell (1. hat)": "Pembrolizumab + Axitinib, Nivolumab + Cabozantinib, Pembrolizumab + Lenvatinib",
+                    "Clear Cell (2. hat)": "Nivolumab, Cabozantinib, Lenvatinib + Everolimus",
+                    "MET Mutant (Papiller Tip 1)": "Savolitinib, Cabozantinib",
+                    "FH-deficient (Hereditary Leiomyomatosis)": "Bevacizumab + Erlotinib",
+                    "Adjuvan (yüksek risk)": "Pembrolizumab",
+                    "Nivolumab + İpilimumab": "Intermediate/Poor risk (CheckMate 214)"
+                } 
+            },
+            bladder: { 
+                name: "Mesane (İdrar Torbası) Kanseri", 
+                icon: "🟡", 
+                category: "Ürogenital", 
+                germline: ["Lynch"], 
+                somatic: ["FGFR3", "PIK3CA", "TP53", "TERT", "ERBB2", "MDM2", "CDKN2A"], 
+                treatments: { 
+                    "FGFR3 Mutant/Füzyon": "Erdafitinib (2. hat)",
+                    "PD-L1+ (Platin yetersiz)": "Pembrolizumab, Atezolizumab",
+                    "HER2 Pozitif": "Trastuzumab Deruxtekan (araştırma)",
+                    "MSI-H/dMMR": "Pembrolizumab",
+                    "Nectin-4+": "Enfortumab vedotin (EV) ± Pembrolizumab",
+                    "EV + Pembrolizumab": "1. hat (cisplatin uygun olmayan)",
+                    "NMIBC (BCG refrakter)": "Pembrolizumab"
+                } 
+            },
+            
+            // DERI KANSERLERI
+            melanoma_cutaneous: { 
+                name: "Kutanöz Melanom", 
+                icon: "🟤", 
+                category: "Deri", 
+                germline: ["CDKN2A", "CDK4", "BAP1", "MC1R", "MITF"], 
+                somatic: ["BRAF V600E", "BRAF V600K", "NRAS", "KIT", "NF1", "TERT", "PTEN"], 
+                treatments: { 
+                    "BRAF V600 Mutant": "Dabrafenib + Trametinib, Vemurafenib + Kobi/Trametinib, Encorafenib + Binimetinib",
+                    "BRAF Wild-type": "Pembrolizumab, Nivolumab, Nivolumab + İpilimumab",
+                    "Adjuvan (IIIC-IV)": "Pembrolizumab, Nivolumab, Dabrafenib + Trametinib (BRAF+)",
+                    "KIT Mutant (akral/mukozal)": "İmatinib, Nilotinib",
+                    "NRAS Mutant": "Binimetinib (MEK inhibitörü)",
+                    "Brain Metastaz": "Pembrolizumab, Dabrafenib + Trametinib (BRAF+)"
+                } 
+            },
+            melanoma_uveal: { 
+                name: "Üveal Melanom", 
+                icon: "👁️", 
+                category: "Deri", 
+                germline: ["BAP1"], 
+                somatic: ["GNAQ", "GNA11", "BAP1", "SF3B1", "EIF1AX"], 
+                treatments: { 
+                    "Metastatik": "Tebentafusp (HLA-A*02:01+, GP100+)",
+                    "Hepatik Metastaz": "İzole hepatik perfüzyon, İmmünoterapi",
+                    "Selumetinib": "MEK inhibitörü (sınırlı etkinlik)",
+                    "İmmünoterapi": "İpilimumab + Nivolumab (düşük yanıt oranı)"
+                } 
+            },
+            melanoma_acral: { 
+                name: "Akral Melanom", 
+                icon: "🟤", 
+                category: "Deri", 
+                germline: [], 
+                somatic: ["KIT", "BRAF", "NRAS", "NF1", "TERT"], 
+                treatments: { 
+                    "KIT Mutant": "İmatinib, Nilotinib, Sunitinib",
+                    "BRAF V600 Mutant": "Dabrafenib + Trametinib",
+                    "BRAF Wild-type": "Pembrolizumab, Nivolumab",
+                    "Genellikle": "Sıklıkla BRAF wild-type, immünoterapi öncelikli"
+                } 
+            },
+            merkel: { 
+                name: "Merkel Hücreli Karsinom", 
+                icon: "🔴", 
+                category: "Deri", 
+                germline: [], 
+                somatic: ["MCPyV", "RB1", "TP53", "HRAS", "PIK3CA"], 
+                treatments: { 
+                    "Lokal": "Cerrahi + Adjuvan radyoterapi",
+                    "Metastatik": "Avelumab, Pembrolizumab, Nivolumab (1. hat)",
+                    "Kemoterapi": "Karboplatin veya Sisplatin + Etoposid (immünoterapi öncesi)",
+                    "NTRK Füzyon (nadir)": "Larotrectinib"
+                } 
+            },
+            squamous_skin: { 
+                name: "Yüzeyel Skuamöz Hücreli Karsinom (cSCC)", 
+                icon: "🔴", 
+                category: "Deri", 
+                germline: [], 
+                somatic: ["TP53", "NOTCH1", "NOTCH2", "CDKN2A", "HRAS"], 
+                treatments: { 
+                    "Lokal": "Cerrahi (MOHS), Radyoterapi",
+                    "Metastatik/Lokal İleri": "Cemiplimab, Pembrolizumab",
+                    "EGFR Yüksek": "Cetuximab (araştırma)",
+                    "Aldara (İmikvimod)": "Süperfisiyal lezyonlarda topikal"
+                } 
+            },
+            basal_cell: { 
+                name: "Basal Hücreli Karsinom", 
+                icon: "🟡", 
+                category: "Deri", 
+                germline: ["PTCH1", "SUFU", "TP53 (Gorlin)"], 
+                somatic: ["PTCH1", "SMO", "TP53", "SUFU"], 
+                treatments: { 
+                    "Lokal": "Cerrahi (MOHS), Radyoterapi, Kriyoterapi",
+                    "Hedgehog İnhibitörleri": "Vismodegib, Sonidegib (lokal ileri/metastatik)",
+                    "Aldara": "Süperfisiyal BCC'de topikal",
+                    "PD-1 İnhibitörü": "Cemiplimab (metastatik/lokal ileri HHİ sonrası)"
+                } 
+            },
+            
+            // KAFA TASI VE BOYUN
+            head_neck: { 
+                name: "Baş ve Boyun Kanserleri (HNSCC)", 
+                icon: "👤", 
+                category: "Baş-Boyun", 
+                germline: [], 
+                somatic: ["HPV", "TP53", "PIK3CA", "EGFR", "NOTCH1", "CCND1", "FAT1"], 
+                treatments: { 
+                    "HPV+ (Orofarenks)": "De-eskaleasyon stratejileri, İyi prognoz",
+                    "HPV-": "İntensif tedavi, Daha agresif seyir",
+                    "EGFR Yüksek": "Cetuximab + Radyoterapi veya kemoterapi (EXTREME rejimi)",
+                    "PD-L1+ (CPS≥1)": "Pembrolizumab + Platin + 5-FU (1. hat)",
+                    "Pembrolizumab Monoterapi": "CPS≥20 (1. hat)",
+                    "Nivolumab": "Platin refrakter (2. hat)",
+                    "Lokal İleri": "Cerrahi + Adjuvan kemoradyoterapi veya Definitif kemoradyoterapi"
+                } 
+            },
+            nasopharyngeal: { 
+                name: "Nazofarenks Kanseri", 
+                icon: "👃", 
+                category: "Baş-Boyun", 
+                germline: [], 
+                somatic: ["EBV", "PIK3CA", "TP53", "CDKN2A"], 
+                treatments: { 
+                    "Non-keratinize (EBV+)": "Kemoradyoterapi (Sisplatin bazlı)",
+                    "İndüksiyon Kemoterapisi": "GP (Gemcitabin, Sisplatin) + Kemoradyoterapi",
+                    "Metastatik": "GP, Pembrolizumab (PD-L1+)",
+                    "Toripalimab": "Çin menşeli PD-1 inhibitörü"
+                } 
+            },
+            salivary_gland: { 
+                name: "Tükürük Bezi Kanseri", 
+                icon: "👄", 
+                category: "Baş-Boyun", 
+                germline: [], 
+                somatic: ["HER2", "AR", "NTRK", "RET", "BRAF", "PIK3CA"], 
+                treatments: { 
+                    "HER2 Pozitif": "Trastuzumab + Doksetaksel",
+                    "AR Pozitif (Salivary duct)": "Androjen deprivasyonu + AR antagonistleri",
+                    "NTRK Füzyon": "Larotrectinib, Entrectinib",
+                    "RET Füzyon": "Selpercatinib, Pralsetinib",
+                    "MYB/MYBL1 (Adenoid kistik)": "MYB inhibitörleri (araştırma)"
+                } 
+            },
+            sinonasal: { 
+                name: "Sinonazal Kanser", 
+                icon: "👃", 
+                category: "Baş-Boyun", 
+                germline: [], 
+                somatic: ["IDH2", "SDH", "TP53", "PIK3CA"], 
+                treatments: { 
+                    "IDH2 Mutant (Sinonazal)": "Enasidenib",
+                    "SDH-deficient": "Hemangiyoperisitom benzeri tedavi",
+                    "Olfaktör Nöroblastom": "Cerrahi + Radyoterapi ± Kemoterapi",
+                    "SNUC": "Kemoradyoterapi (çok agresif)"
+                } 
+            },
+            
+            // SINIR SISTEMI TUMORLERI
+            glioblastoma: { 
+                name: "Glioblastoma (GBM)", 
+                icon: "🧠", 
+                category: "Sinir Sistemi", 
+                germline: ["TP53", "NF1", "Li-Fraumeni"], 
+                somatic: ["EGFR", "PTEN", "TP53", "IDH1", "TERT", "MGMT", "PIK3CA", "RB1"], 
+                treatments: { 
+                    "Standard": "Maksimum güvenli rezeksiyon + Temozolomide + Radyoterapi (Stupp protokolü)",
+                    "MGMT Metile": "Temozolomide'ye daha iyi yanıt",
+                    "IDH Wild-type": "GBM (kötü prognoz)",
+                    "Tumor Treating Fields (TTF)": "Optune (adjuvan)",
+                    "Bevacizumab": "Rekürren/progresif hastalık (pseudoresponse dikkat)",
+                    "Lomustine": "Rekürren hastalık",
+                    "IDH1 Mutant": "Vorasidenib (araştırma, IDH mutant gliomlarda)"
+                } 
+            },
+            astrocytoma: { 
+                name: "Astrositoma (Düşük Derece)", 
+                icon: "🧠", 
+                category: "Sinir Sistemi", 
+                germline: ["IDH1", "IDH2", "TP53"], 
+                somatic: ["IDH1", "IDH2", "ATRX", "TP53", "CIC", "FUBP1"], 
+                treatments: { 
+                    "IDH Mutant": "Vorasidenib (araştırma, INDIGO çalışması)",
+                    "BRAF Füzyon": "Dabrafenib + Trametinib",
+                    "1p/19q Intakt": "Astrositoma (PCV kemoterapisi)",
+                    "Sezary": "Radyoterapi + PCV veya Temozolomide"
+                } 
+            },
+            oligodendroglioma: { 
+                name: "Oligodendrogliom", 
+                icon: "🧠", 
+                category: "Sinir Sistemi", 
+                germline: [], 
+                somatic: ["IDH1", "IDH2", "1p/19q kodelyasyon", "CIC", "FUBP1", "NOTCH1"], 
+                treatments: { 
+                    "1p/19q Kodelyasyonlu": "Oligodendrogliom tanısı için gerekli",
+                    "PCV Kemoterapisi": "Prokarbazin, Lomustin (CCNU), Vinkristin",
+                    "Radyoterapi + PCV": "Uzun süreli PFS sağlar",
+                    "IDH Mutant": "Vorasidenib (araştırma)"
+                } 
+            },
+            meningioma: { 
+                name: "Meningiom", 
+                icon: "🧠", 
+                category: "Sinir Sistemi", 
+                germline: ["NF2", "SMARCB1", "SMARCE1"], 
+                somatic: ["NF2", "TRAF7", "AKT1", "SMO", "PIK3CA", "POLR2A"], 
+                treatments: { 
+                    "WHO Grade I": "Simpson Grade 1-2 rezeksiyon veya Aktif izlem",
+                    "WHO Grade II": "Rezeksiyon + Radyoterapi (rekürren)",
+                    "WHO Grade III": "Rezeksiyon + Adjuvan radyoterapi",
+                    "Bevacizumab": "Rekürren/progresif hastalık",
+                    "Everolimus": "Rekürren hastalık (araştırma)",
+                    "Vorinostat": "Rekürren hastalık (araştırma)"
+                } 
+            },
+            medulloblastoma: { 
+                name: "Medulloblastom", 
+                icon: "🧠", 
+                category: "Sinir Sistemi", 
+                germline: ["TP53", "APC", "PTCH1", "SUFU", "BRCA2", "PALB2"], 
+                somatic: ["CTNNB1", "SHH", "MYC", "MYCN", "TP53", "SMARCA4"], 
+                treatments: { 
+                    "WNT": "İyi prognoz, standart risk tedavisi",
+                    "SHH": "Vismodegib (SMO inhibitörü), SMO mutasyonlarında direnç",
+                    "Group 3": "Kötü prognoz, MYC amplifikasyonu",
+                    "Group 4": "İntermediate prognoz",
+                    "High Risk": "Kraniyospinal irradiasyon + Kemoterapi + Otolog transplant"
+                } 
+            },
+            
+            // KEMIK VE YUMUSAK DOKU SARKOMLARI
+            osteosarcoma: { 
+                name: "Osteosarkom", 
+                icon: "🦴", 
+                category: "Sarkom", 
+                germline: ["RB1", "TP53", "RECQL4"], 
+                somatic: ["TP53", "RB1", "ATRX", "MDM2"], 
+                treatments: { 
+                    "Standard": "MAP (Metotreksat + Adriamisin + Sisplatin)",
+                    "EURAMOS-1": "İyi yanıt verenlerde MAP, kötü yanıtta MAP + İfosfamid + Etoposid",
+                    "Rekürren": "Regorafenib, İfosfamid + Etoposid, Gemcitabin + Doksetaksel",
+                    "Lokal": "Limb salvage cerrahisi (90% olasılıkla)",
+                    "Metastatik": "Aggresif kemoterapi + Metastazektomi"
+                } 
+            },
+            ewing: { 
+                name: "Ewing Sarkom", 
+                icon: "🦴", 
+                category: "Sarkom", 
+                germline: [], 
+                somatic: ["EWSR1-FLI1", "EWSR1-ERG", "EWSR1-ETV1", "EWSR1-FEV"], 
+                treatments: { 
+                    "Standard": "VAC/IE (Vinkristin + Doksorubisin + Siklofosfamid / İfosfamid + Etoposid)",
+                    "Interval Sıkıştırılmış": "Her 2 haftada (kemik iliği desteği ile)",
+                    "Rekürren": "İrinotekan + Temozolomide, Topotekan + Siklofosfamid",
+                    "CD99+": "Ewing tanısında immunohistokimya"
+                } 
+            },
+            chondrosarcoma: { 
+                name: "Kondrosarkom", 
+                icon: "🦴", 
+                category: "Sarkom", 
+                germline: ["EXT1", "EXT2"], 
+                somatic: ["IDH1", "IDH2", "COL2A1", "TP53"], 
+                treatments: { 
+                    "Konvansiyonel": "Cerrahi (kemoterapiye dirençli)",
+                    "Dediferansiye": "Osteosarkom benzeri kemoterapi (MAP)",
+                    "Mezenkimal": "Ewing benzeri tedavi",
+                    "IDH1/2 Mutant": "Ivosidenib (dediferansiye ve mezenkimal için)",
+                    "Clear Cell": "Cerrahi (iyi prognoz)"
+                } 
+            },
+            liposarcoma: { 
+                name: "Liposarkom", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: [], 
+                somatic: ["MDM2", "CDK4", "HMGA2", "DDIT3", "FUS-CHOP"], 
+                treatments: { 
+                    "Well-differentiated/Dedifferentiated": "MDM2 amplifikasyonu",
+                    "MDM2+": "Milademetan (MDM2 inhibitörü, araştırma)",
+                    "CDK4+": "Palbosiklib (araştırma)",
+                    "Miksöid/Round cell": "Trabektedin, Eribulin",
+                    "Pleomorfik": "Doksorubisin + İfosfamid, Trabektedin"
+                } 
+            },
+            leiomyosarcoma: { 
+                name: "Leiyomiyosarkom", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: [], 
+                somatic: ["TP53", "RB1", "ATRX", "PTEN", "PIK3CA"], 
+                treatments: { 
+                    "1. Hat": "Doksorubisin",
+                    "2. Hat": "Gemcitabin + Doksetaksel, Trabektedin",
+                    "Pazopanib": "Advanced/metastatik",
+                    "Eribulin": "Liposarkom ve leiomyosarkomda onaylı",
+                    "CDK4/6 İnhibitörleri": "RB1 wild-type (araştırma)"
+                } 
+            },
+            synovial: { 
+                name: "Sinoviyal Sarkom", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: [], 
+                somatic: ["t(X;18)", "SS18-SSX1", "SS18-SSX2", "SS18-SSX4"], 
+                treatments: { 
+                    "Standard": "İfosfamid + Doksorubisin (AI)",
+                    "Yüksek Doz İfosfamid": "3-7.5 g/m2/gün",
+                    "Pazopanib": "Advanced/metastatik",
+                    "Trabektedin": "2. hat",
+                    "Radyoterapi": "Preoperatif veya postoperatif"
+                } 
+            },
+            rhabdomyosarcoma: { 
+                name: "Rabdomiyosarkom", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: [], 
+                somatic: ["PAX3-FOXO1", "PAX7-FOXO1", "PAX3-NCOA1", "PAX3-NCOA2"], 
+                treatments: { 
+                    "Alveolar (Fusion+)": "VAC (Vinkristin + Aktinomisin D + Siklofosfamid)",
+                    "Embryonal": "VAC veya VA (düşük risk)",
+                    "Metastatik": "VAC + İrinotekan",
+                    "Radyoterapi": "Tüm alt tiplerde (lokal kontrol için)"
+                } 
+            },
+            gist: { 
+                name: "GIST (Gastrointestinal Stromal Tümör)", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: ["KIT", "PDGFRA", "SDHx", "NF1"], 
+                somatic: ["KIT", "PDGFRA", "SDH", "BRAF", "NF1"], 
+                treatments: { 
+                    "KIT Exon 11": "İmatinib (400 mg/gün)",
+                    "KIT Exon 9": "Yüksek doz İmatinib (800 mg/gün)",
+                    "PDGFRA D842V": "Avapritinib (1. hat)",
+                    "PDGFRA Diğer": "İmatinib",
+                    "SDH-deficient": "Sunitinib, Regorafenib",
+                    "BRAF V600E": "Dabrafenib + Trametinib",
+                    "İmatinib Refrakter": "Sunitinib, Regorafenib, Ripretinib, Avapritinib"
+                } 
+            },
+            dfsp: { 
+                name: "Dermatofibrosarkoma Protuberans (DFSP)", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: [], 
+                somatic: ["COL1A1-PDGFB"], 
+                treatments: { 
+                    "Cerrahi": "Geniş lokal eksizyon veya MOHS",
+                    "İmatinib": "Unresectable/metastatik, neoadjuvan",
+                    "PDGFB Füzyonu": "İmatinibe duyarlı",
+                    "Fibrosarcomatous": "Daha agresiv, metastaz potansiyeli yüksek"
+                } 
+            },
+            desmoid: { 
+                name: "Desmoid Tümör (Agresif Fibromatozis)", 
+                icon: "🥩", 
+                category: "Sarkom", 
+                germline: ["APC", "CTNNB1"], 
+                somatic: ["CTNNB1", "APC"], 
+                treatments: { 
+                    "Aktif İzlem": "Tüm vakalarda ilk seçenek (stabilizasyon/regresyon olabilir)",
+                    "Sorafenib": "Nötrofil sayısını izle",
+                    "Nirogacestat": "Gamma secretase inhibitörü (onaylı)",
+                    "Metotreksat + Vinkristin": "Pediatrik ve yetişkin",
+                    "Doksorubisin": "Hızlı progresyon durumunda",
+                    "Radyoterapi": "Cerrahi sonrası rekürren, cerrahi contraindike"
+                } 
+            },
+            
+            // HEMATOLOJIK MALIGNITELER
+            all: { 
+                name: "Akut Lenfoblastik Lösemi (ALL)", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["BCR-ABL1", "KMT2A", "ETV6-RUNX1", "TCF3-PBX1", "Hypodiploidy", "Hyperdiploidy", "Ph-like"], 
+                treatments: { 
+                    "BCR-ABL+ (Ph+)": "İmatinib/Dasatinib + Steroidler (indüksiyon), Blinatumomab",
+                    "BCR-ABL+ (2. hat)": "Ponatinib, Asciminib",
+                    "CD19+": "Blinatumomab (BiTE)",
+                    "CD22+": "Inotuzumab ozogamicin (anti-CD22 antikor-ilac konjugatı)",
+                    "CAR-T": "Tisagenlecleucel (Kymriah), Brexucabtagene autoleucel",
+                    "Pediatrik": "Total Therapy veya Berlin-Frankfurt-Münster (BFM) protokolleri"
+                } 
+            },
+            aml: { 
+                name: "Akut Miyeloid Lösemi (AML)", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: ["CEBPA", "DDX41", "RUNX1", "GATA2", "TP53"], 
+                somatic: ["NPM1", "FLT3-ITD", "FLT3-TKD", "CEBPA", "TP53", "IDH1", "IDH2", "RUNX1-RUNX1T1", "PML-RARA", "KMT2A"], 
+                treatments: { 
+                    "PML-RARA (APL)": "ATRA + Arsenik Trioksit (ATO) (kan transfüzyonu desteği kritik)",
+                    "FLT3-ITD": "Midostaurin (1. hat), Gilteritinib (relapsed/refrakter)",
+                    "IDH1": "Ivosidenib",
+                    "IDH2": "Enasidenib",
+                    "NPM1": "İyi risk (kemoterapi ile)",
+                    "TP53 Mutant": "Azasitid + Venetoklaks (düşük yoğunluklu)",
+                    "Venetoklaks + HMA": "Fit olmayan hastalar (1. hat)",
+                    "Gemtuzumab ozogamicin": "CD33+ AML"
+                } 
+            },
+            cll: { 
+                name: "Kronik Lenfositik Lösemi (KLL)", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["del(13q)", "del(11q)", "del(17p)", "TP53", "IGHV", "NOTCH1", "SF3B1"], 
+                treatments: { 
+                    "IGHV Mutant": "İyi prognoz (kemoterapi duyarlı)",
+                    "IGHV Unmutated": "Kötü prognoz",
+                    "del(17p)/TP53": "Acalabrutinib, Zanubrutinib, Venetoklaks",
+                    "BTK İnhibitörleri": "İbrutinib, Acalabrutinib, Zanubrutinib",
+                    "BCL2 İnhibitörü": "Venetoklaks",
+                    "FCR": "Fludarabin + Siklofosfamid + Rituximab (fit, IGHV mutant)",
+                    "BTK + Venetoklaks": "Kombinasyon tedavileri (araştırma)"
+                } 
+            },
+            cml: { 
+                name: "Kronik Miyeloid Lösemi (KML)", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["BCR-ABL1", "T315I", "F317L", "Y253H", "E255K/V"], 
+                treatments: { 
+                    "Kronik Faz": "İmatinib, Dasatinib, Nilotinib, Bosutinib",
+                    "T315I": "Ponatinib, Asciminib",
+                    "Accelerated/Blast": "Ponatinib veya transplant",
+                    "Treatment-free Remission (TFR)": "Derin moleküler yanıtta (MR4.5) denenebilir",
+                    "Asciminib": "STAMP inhibitörü (BCR-ABL1 allosterik)"
+                } 
+            },
+            myeloma: { 
+                name: "Multipl Miyelom", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["t(4;14)", "t(14;16)", "del(17p)", "1q+", "KRAS", "NRAS", "BRAF", "TP53"], 
+                treatments: { 
+                    "Transplant Uygun": "VRd (Bortezomib, Lenalidomid, deksametazon) indüksiyon + ASCT",
+                    "Transplant Uygun Değil": "DRd (Daratumumab, Lenalidomid, deksametazon) veya VRd",
+                    "t(4;14), t(14;16), del(17p)": "Yüksek risk, proteazom inhibitörü bazlı",
+                    "Anti-CD38": "Daratumumab, İsatumab",
+                    "CAR-T": "Idecabtagene vicleucel, Ciltacabtagene autoleucel",
+                    "Selinexor": "XPO1 inhibitörü (refrakter hastalık)"
+                } 
+            },
+            lymphoma_dlbcl: { 
+                name: "Diffüz Büyük B Hücreli Lenfoma (DLBCL)", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["BCL2", "BCL6", "MYC", "TP53", "MYD88", "CD79B", "EZH2"], 
+                treatments: { 
+                    "R-CHOP": "Rituximab + Siklofosfamid, Doksorubisin, Vinkristin, Prednizon",
+                    "Double/Triple Hit": "DA-EPOCH-R (dose-adjusted)",
+                    "CAR-T": "Axicabtagene ciloleucel, Tisagenlecleucel (2. hat sonrası)",
+                    "Polatuzumab vedotin": "Polatuzumab + BR (relapsed/refrakter)",
+                    "Tafasitamab + Lenalidomid": "Relapsed/refrakter",
+                    "Loncastuximab tesirine": "CD19 antikor-ilac konjugatı"
+                } 
+            },
+            lymphoma_fl: { 
+                name: "Folliküler Lenfoma", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["t(14;18)", "BCL2", "EZH2", "CREBBP", "KMT2D"], 
+                treatments: { 
+                    "Gözlem": "Low tumor burden",
+                    "Rituximab": "Monoterapi veya R-Bendamustin, R-CHOP",
+                    "EZH2 Mutant": "Tazemetostat",
+                    "PI3K İnhibitörleri": "Copanlisib, Idelalisib",
+                    "CAR-T": "Axicabtagene ciloleucel (3. hat sonrası)",
+                    "Lenalidomid + Rituximab": "R2 (bakım veya tedavi)"
+                } 
+            },
+            lymphoma_mcl: { 
+                name: "Mantle Hücreli Lenfoma", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["t(11;14)", "CCND1", "TP53", "SOX11", "ATM"], 
+                treatments: { 
+                    "BTK İnhibitörleri": "İbrutinib, Acalabrutinib, Zanubrutinib",
+                    "BTK + Venetoklaks": "Kombinasyon",
+                    "CAR-T": "Brexucabtagene autoleucel",
+                    "VR": "Bortezomib, Rituximab",
+                    "R-CHOP/R-DHAP": "Kemoterapi",
+                    "Transplant": "Konsolidasyon (fit hastalar)"
+                } 
+            },
+            lymphoma_hl: { 
+                name: "Hodgkin Lenfoma", 
+                icon: "🩸", 
+                category: "Hematolojik", 
+                germline: [], 
+                somatic: ["RS cells", "EBV", "9p24.1 (PD-L1/PD-L2 amplifikasyonu)"], 
+                treatments: { 
+                    "Early Favorable": "ABVD x 2 + ISRT (20 Gy)",
+                    "Early Unfavorable": "ABVD x 4 + ISRT (30 Gy) veya BEACOPP",
+                    "Advanced": "ABVD x 6 veya BEACOPP esc/BEACOPP-14",
+                    "Brentuximab vedotin": "CD30 antikor-ilac konjugatı",
+                    "Nivolumab/Pembrolizumab": "Relapsed/refrakter, PD-L1+",
+                    "PD-1 + AVD": "Nivolumab + AVD (advanced)"
+                } 
+            },
+            
+            // NÖROENDOKRIN TÜMÖRLER
+            net_lung: { 
+                name: "Akciğer Nöroendokrin Tümör", 
+                icon: "🟢", 
+                category: "Nöroendokrin", 
+                germline: [], 
+                somatic: [], 
+                treatments: { 
+                    "Tipik Karsinoid": "Cerrahi (1. seçenek)",
+                    "Atipik Karsinoid": "Cerrahi + Adjuvan kemoterapi (Platin + Etoposid)",
+                    "Büyük Hücreli Nöroendokrin": "Küçük hücreli akciğer kanseri benzeri tedavi",
+                    "Küçük Hücreli": "Kemoterapi + İmmünoterapi",
+                    "Somatostatin Analogları": "Oktreotid, Lanreotid (semptomatik)"
+                } 
+            },
+            net_gi: { 
+                name: "Gastrointestinal Nöroendokrin Tümör (GI-NET)", 
+                icon: "🟢", 
+                category: "Nöroendokrin", 
+                germline: ["MEN1"], 
+                somatic: ["DAXX", "ATRX", "mTOR", "PIK3CA"], 
+                treatments: { 
+                    "Lokal": "Cerrahi (endoskopik veya transabdominal)",
+                    "Metastatik": "Somatostatin analogları (Oktreotid, Lanreotid)",
+                    "Everolimus": "mTOR inhibitörü",
+                    "Sunitinib": "Pankreas NET'te",
+                    "PRRT": "Lutetium-177 DOTATATE (SSTR pozitif)",
+                    "Hepatik": "Embolizasyon, Radyofrekans ablasyon"
+                } 
+            },
+            
+            // NADIR KANSERLER (Gerçekten nadir olan malign tümörler)
+            uveal_melanoma: { 
+                name: "Üveal Melanom", 
+                icon: "👁️", 
+                category: "Nadir", 
+                germline: ["BAP1"], 
+                somatic: ["GNAQ", "GNA11", "BAP1", "SF3B1", "EIF1AX"], 
+                treatments: { 
+                    "Lokal": "Plak radyoterapii, Proton tedavisi, Enükleasyon",
+                    "Metastatik": "Tebentafusp (HLA-A*02:01+, GP100+)",
+                    "Hepatik": "İzole hepatik perfüzyon, İmmünoterapi",
+                    "Selumetinib": "MEK inhibitörü (sınırlı etkinlik)"
+                } 
+            },
+            retinoblastoma: { 
+                name: "Retinoblastom", 
+                icon: "👁️", 
+                category: "Nadir", 
+                germline: ["RB1"], 
+                somatic: ["RB1", "MYCN"], 
+                treatments: { 
+                    "Lokal": "Lazer fotokoagülasyon, Kriyoterapi, Termoterapi",
+                    "Kemoreduksiyon": "Sistemik kemoterapi (karboplatin, etoposid, vinkristin)",
+                    "İntra-arteriyel": "Melphalan (oftalmik arter)",
+                    "İntravitreal": "Melphalan (vitrit için)",
+                    "Enükleasyon": "Göz kurtarılamadığında"
+                } 
+            },
+            neuroblastoma: { 
+                name: "Nöroblastom", 
+                icon: "🧠", 
+                category: "Nadir", 
+                germline: ["ALK", "PHOX2B"], 
+                somatic: ["MYCN", "ALK", "1p36", "11q", "17q"], 
+                treatments: { 
+                    "Low Risk": "Cerrahi veya gözlem",
+                    "Intermediate": "Cerrahi + Kemoterapi",
+                    "High Risk": "İndüksiyon + Konsolidasyon (otolog transplant) + Bakım (13-cis retinoik asit + Dinutuximab)",
+                    "GD2": "Dinutuximab (anti-GD2 antikor)",
+                    "I-131 MIBG": "Refrakter/relapsed"
+                } 
+            },
+            nephroblastoma: { 
+                name: "Nefroblastom (Wilms Tümörü)", 
+                icon: "🫘", 
+                category: "Nadir", 
+                germline: ["WT1", "WTX", "CTNNB1", "TP53"], 
+                somatic: ["WT1", "TP53", "CTNNB1", "LOH 1p/16q"], 
+                treatments: { 
+                    "Standard Risk": "Nefrektomi + Vincristin ± Doksorubisin",
+                    "High Risk": "Nefrektomi + Aktinomisin D + Vincristin + Doksorubisin",
+                    "Anaplastik": "Daha agresif kemoterapi",
+                    "Bilateral": "Nefron koruyucu cerrahi"
+                } 
+            },
+            hepatoblastoma: { 
+                name: "Hepatoblastom", 
+                icon: "🫀", 
+                category: "Nadir", 
+                germline: ["APC", "Beckwith-Wiedemann"], 
+                somatic: ["CTNNB1", "NFE2L2", "TERT"], 
+                treatments: { 
+                    "Standard": "Cisplatin bazlı kemoterapi + Cerrahi",
+                    "PRETEXT": "PRETEXT evrelemesi (çocukluk çağı)",
+                    "Transplant": "Transplantasyon (PRETEXT IV, multifokal)",
+                    "Sorafenib": "Refrakter hastalık"
+                } 
+            },
+            chordoma: { 
+                name: "Kordom", 
+                icon: "🦴", 
+                category: "Nadir", 
+                germline: ["brachyury (TBXT)"], 
+                somatic: ["brachyury", "PIK3CA", "EGFR"], 
+                treatments: { 
+                    "Cerrahi": "Geniş marjinli rezeksiyon (en kritik prognostik faktör)",
+                    "Proton Tedavisi": "Yüksek doz radyoterapi (proton veya IMRT)",
+                    "İmatinib": "PDGFRB+ vakalarda",
+                    "Erlotinib": "EGFR+ vakalarda",
+                    "Palbociklib": "CDK4/6 inhibitörü (araştırma)"
+                } 
+            },
+            angiosarcoma: { 
+                name: "Anjiosarkom", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["MYC", "FLT4", "KDR", "TP53"], 
+                treatments: { 
+                    "Lokal": "Geniş cerrahi + Radyoterapi",
+                    "Metastatik": "Paklitaksel (haftalık), Doksorubisin",
+                    "Pazopanib": "Anti-anjiyojenik",
+                    "Gemcitabin": "Hemangiyosarkomda etkili"
+                } 
+            },
+            alveolar_soft_part: { 
+                name: "Alveoler Yumuşak Parça Sarkomu", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["ASPSCR1-TFE3"], 
+                treatments: { 
+                    "Cerrahi": "Geniş eksizyon",
+                    "Sunitinib": "Anti-anjiyojenik (1. hat)",
+                    "Pazopanib": "2. hat",
+                    "Atezolizumab + Bevacizumab": "Kombinasyon (araştırma)"
+                } 
+            },
+            epithelioid_sarcoma: { 
+                name: "Epiteloid Sarkom", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: ["INI1"], 
+                somatic: ["SMARCB1 (INI1)"], 
+                treatments: { 
+                    "Cerrahi": "Geniş eksizyon",
+                    "Radyoterapi": "Adjuvan",
+                    "Tazemetostat": "EZH2 inhibitörü (INI1 kaybı)",
+                    "Doksorubisin": "Kemoterapi",
+                    "Pazopanib": "Advanced"
+                } 
+            },
+            clear_cell_sarcoma: { 
+                name: "Clear Cell Sarkom (Yumuşak Doku/Malign Melanom of Soft Parts)", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["EWSR1-ATF1"], 
+                treatments: { 
+                    "Cerrahi": "Geniş eksizyon + Lenf nodu diseksiyonu",
+                    "Kemoterapi": "İfosfamid + Doksorubisin",
+                    "İmmünoterapi": "Düşük yanıt oranı",
+                    "Prognostik": "Yüksek rekürrens riski"
+                } 
+            },
+            desmoplastic_small_round_cell: { 
+                name: "Desmoplastik Küçük Yuvarlak Hücreli Tümör", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["EWSR1-WT1"], 
+                treatments: { 
+                    "Yoğun Kemoterapi": "P6 (Sisplatin, Etoposid, İfosfamid, Vinkristin, Siklofosfamid, Doksorubisin)",
+                    "Cerrahi": "Debulking",
+                    "Radyoterapi": "Tüm abdomen (WART)",
+                    "Hipertermik İntraperitoneal": "HIPEC (araştırma)"
+                } 
+            },
+            inflammatory_myofibroblastic: { 
+                name: "İnflamatuar Miyofibroblastik Tümör", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["ALK", "ROS1", "NTRK3", "RET", "PDGFRB"], 
+                treatments: { 
+                    "ALK+": "Krizotinib, Alectinib, Ceritinib",
+                    "ROS1+": "Krizotinib, Entrectinib",
+                    "NTRK+": "Larotrectinib, Entrectinib",
+                    "Cerrahi": "Resektabl lezyonlarda"
+                } 
+            },
+            pecoma: { 
+                name: "PEComa (Perivasküler Epiteloid Hücreli Tümör)", 
+                icon: "🥩", 
+                category: "Nadir", 
+                germline: ["TSC1", "TSC2"], 
+                somatic: ["TSC1", "TSC2", "TFE3"], 
+                treatments: { 
+                    "Sirolimus": "mTOR inhibitörü (1. hat)",
+                    "Pazopanib": "Anti-anjiyojenik",
+                    "TSC1/2 Mutant": "mTOR inhibitörlerine duyarlı"
+                } 
+            },
+            kaposi_sarcoma: { 
+                name: "Kaposi Sarkomu", 
+                icon: "🟣", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["HHV-8 (KSHV)"], 
+                treatments: { 
+                    "ART": "Antiretroviral tedavi (HIV+ vakalarda)",
+                    "Liposomal Doksorubisin": "Sistemik tedavi",
+                    "Paklitaksel": "2. hat",
+                    "Pomalidomid": "İmmünomodülatör",
+                    "Lokal": "Radyoterapi, Intralesional vinblastin, Kriyoterapi"
+                } 
+            },
+            unknown_primary: { 
+                name: "Bilinmeyen Primerli Kanser (CUP)", 
+                icon: "❓", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["FOXA2", "PAX8", "TTF1", "GATA3", "CDX2", "PAX2"], 
+                treatments: { 
+                    "Kolorektal-benzeri": "FOLFOX veya FOLFIRI",
+                    "Ürotelyal-benzeri": "Platin bazlı kemoterapi",
+                    "Nöroendokrin": "Platin + Etoposid",
+                    "Squamous (HPV+)": "Pembrolizumab (CPS≥1)",
+                    "Adenokarsinom (CPS≥10)": "Pembrolizumab",
+                    "Gene Expression Profiling": "90 gen paneli (tahmine dayalı)"
+                } 
+            },
+            paraganglioma: { 
+                name: "Paragangliom/Feokromositoma", 
+                icon: "🟣", 
+                category: "Nadir", 
+                germline: ["SDHx", "VHL", "RET", "NF1", "TMEM127", "MAX", "FH"], 
+                somatic: ["SDH", "VHL", "RET", "NF1", "HRAS", "EPAS1"], 
+                treatments: { 
+                    "Cerrahi": "Alfa-blokade sonrası (fenoksibenzamin)",
+                    "Metastatik": "I-131 MIBG, Lutetium-177 DOTATATE (SSTR+)",
+                    "Sunitinib": "Anti-anjiyojenik",
+                    "Kemoterapi": "Siklofosfamid, Vincristin, Dakarbazin (CVD)",
+                    "HIF-2α İnhibitörü": "Belzutifan (VHL mutant)"
+                } 
+            },
+            thymic_carcinoma: { 
+                name: "Timik Karsinom", 
+                icon: "🫁", 
+                category: "Nadir", 
+                germline: [], 
+                somatic: ["GTF2I", "TP53", "KIT", "EGFR"], 
+                treatments: { 
+                    "Cerrahi": "Radikal timektomi",
+                    "CAP": "Siklofosfamid, Doksorubisin, Sisplatin",
+                    "PE": "Sisplatin, Etoposid",
+                    "Sunitinib": "Anti-anjiyojenik",
+                    "Pembrolizumab": "PD-L1+ vakalarda"
+                } 
+            },
+            germ_cell: { 
+                name: "Ekstragonadal Germ Hücreli Tümör", 
+                icon: "🟣", 
+                category: "Nadir", 
+                germline: ["KIT"], 
+                somatic: ["KIT", "KRAS", "isochromosome 12p"], 
+                treatments: { 
+                    "Seminoma": "BEP veya EP (Sisplatin bazlı)",
+                    "Non-seminoma": "BEP x 4 veya VIP",
+                    "Kemoradyoterapi": "Sakral/s mediastinal yerleşimli",
+                    "Yüksek Doz": "Otolog transplant (refrakter vakalar)"
+                } 
+            }
+        };
+
+        const labs = [
+            { id: "nesiller", name: "Nesiller Genetik", loc: "İstanbul (Merkez)", tests: ["BRCA", "NGS", "WES", "WGS", "Likit Biyopsi"], features: ["Online danışmanlık", "Hızlı sonuç (7-10 gün)", "Kapıdan örnek alım"], contact: "0212 123 45 67", sampleTypes: ["Kan", "Tükürük", "Doku"] },
+            { id: "pathern", name: "Pathern Laboratuvarı", loc: "İstanbul (Ataşehir)", tests: ["1021 Gen Panel", "Likit Biyopsi", "FISH", "HRR/HRD", "Sıvı Biyopsi"], features: ["Kapsamlı onkoloji paneli", "Kandan tümör DNA", "SGK anlaşmalı"], contact: "0216 123 45 67", sampleTypes: ["Doku", "Kan (Streptek)", "Parafin Blok"] },
+            { id: "acibadem", name: "Acıbadem Genetik", loc: "İstanbul (Çok şube)", tests: ["Akciğer Paneli", "Likit Biyopsi", "PD-L1", "Tümör Paneli"], features: ["Hastane entegrasyonu", "Multidisipliner ekip", "Yüksek teknoloji"], contact: "0212 444 55 66", sampleTypes: ["Doku", "Kan", "Parafin Blok"] },
+            { id: "medipol", name: "Medipol Medigen", loc: "İstanbul (Bağcılar)", tests: ["Solid Tümör NGS", "Hematoonkoloji", "Filyasyon", "WES"], features: ["Üniversite hastanesi", "Akademik altyapı", "Parafin blok uzmanlığı"], contact: "0212 444 44 44", sampleTypes: ["Parafin Blok", "Taze Doku", "Kan"] },
+            { id: "istanbul", name: "İstanbul Laboratuvarları", loc: "Kadıköy & Şişli", tests: ["BRCA", "FISH", "Tümör Belirteçleri", "Hormon"], features: ["SGK indirimi (%50)", "Hızlı sonuç", "Kolay ulaşım"], contact: "0216 345 67 89", sampleTypes: ["Kan", "Tükürük", "Doku"] },
+            { id: "genetiks", name: "Genetiks", loc: "İstanbul", tests: ["360 Gen Panel", "Kanser Genetiği", "Taşıyıcılık", "Farmakogenetik"], features: ["Yüksek çözünürlük", "Kapsamlı rapor", "Genetik danışmanlık"], contact: "0212 567 89 00", sampleTypes: ["Kan", "Tükürük", "Doku"] }
+        ];
+
+        function showStep(n) {
+            // Tüm adımları gizle
+            document.querySelectorAll('.step-content').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('fade-in');
+            });
+            
+            // İstenen adımı göster
+            const targetStep = document.getElementById('step' + n);
+            if (targetStep) {
+                targetStep.classList.remove('hidden');
+                targetStep.classList.add('fade-in');
+            }
+            
+            // Progress bar güncelle
+            const progressBar = document.getElementById('progressBar');
+            if (progressBar) {
+                progressBar.style.width = (n / 6 * 100) + '%';
+            }
+            
+            // Sayfayı yukarı kaydır
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectStage(stage) {
+            state.stage = stage;
+            state.cancer = null; // Reset cancer selection
+            populateCancers();
+            showStep(2);
+        }
+
+        function populateCancers() {
+            const container = document.getElementById('cancerOptions');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            
+            // Kategorilere göre grupla
+            const categories = {};
+            Object.entries(cancers).forEach(([key, val]) => {
+                if (!categories[val.category]) categories[val.category] = [];
+                categories[val.category].push([key, val]);
+            });
+            
+            // Kategorileri sıralı göster
+            const categoryOrder = ["Meme", "Jinekolojik", "Gastrointestinal", "Akciğer", "Ürogenital", "Deri", "Baş-Boyun", "Sinir Sistemi", "Sarkom", "Hematolojik", "Nöroendokrin", "Nadir"];
+            
+            categoryOrder.forEach(cat => {
+                if (categories[cat]) {
+                    const catTitle = document.createElement('div');
+                    catTitle.className = 'category-title';
+                    catTitle.textContent = cat;
+                    container.appendChild(catTitle);
+                    
+                    categories[cat].forEach(([key, val]) => {
+                        const div = document.createElement('div');
+                        div.className = 'option';
+                        div.onclick = () => selectCancer(key);
+                        
+                        // Güvenli erişim için kontroller
+                        const germlineTag = val.germline && val.germline.length > 0 
+                            ? `<span class="tag">Kalıtsal: ${val.germline[0]}</span>` 
+                            : '';
+                        const somaticTag = val.somatic && val.somatic.length > 0 
+                            ? `<span class="tag">Somatik: ${val.somatic[0]}</span>` 
+                            : '';
+                        
+                        div.innerHTML = `
+                            <span class="option-icon">${val.icon || '🔹'}</span>
+                            <div class="option-title">${val.name}</div>
+                            <div class="option-tags">
+                                ${germlineTag}
+                                ${somaticTag}
+                            </div>
+                        `;
+                        container.appendChild(div);
+                    });
+                }
+            });
+        }
+
+        function filterCancers() {
+            const searchInput = document.getElementById('cancerSearch');
+            if (!searchInput) return;
+            
+            const search = searchInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            const options = document.querySelectorAll('#cancerOptions .option');
+            const titles = document.querySelectorAll('#cancerOptions .category-title');
+            
+            options.forEach(opt => {
+                const text = opt.textContent.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                opt.style.display = text.includes(search) ? 'block' : 'none';
+            });
+            
+            // Boş kategorileri gizle
+            titles.forEach(title => {
+                let next = title.nextElementSibling;
+                let hasVisible = false;
+                while (next && !next.classList.contains('category-title')) {
+                    if (next.classList.contains('option') && next.style.display !== 'none') {
+                        hasVisible = true;
+                    }
+                    next = next.nextElementSibling;
+                }
+                title.style.display = hasVisible ? 'block' : 'none';
+            });
+        }
+
+        function selectCancer(cancer) {
+            state.cancer = cancer;
+            populateTests();
+            showStep(3);
+        }
+
+        function populateTests() {
+            const container = document.getElementById('testOptions');
+            const subtitle = document.getElementById('testSubtitle');
+            if (!container || !state.cancer) return;
+            
+            const c = cancers[state.cancer];
+            if (!c) return;
+            
+            container.innerHTML = '';
+            
+            if (subtitle) {
+                subtitle.textContent = state.stage === 'risk' ? 'Risk değerlendirmesi için test seçin' : 'Tedavi planlaması için test seçin';
+            }
+
+            if (state.stage === 'risk') {
+                // Kalıtsal test seçenekleri
+                let germlineHtml = `
+                    <div class="option" onclick="selectTest('germline')">
+                        <span class="option-icon">🧬</span>
+                        <div class="option-title">Kalıtsal Kanser Paneli (Germline)</div>
+                        <div class="option-desc">Aile öyküsüne göre çok genli risk analizi</div>
+                        <div class="option-tags">
+                            ${c.germline && c.germline.length > 0 ? c.germline.slice(0, 4).map(g => `<span class="tag">${g}</span>`).join('') : '<span class="tag">Multi-gen</span>'}
+                        </div>
+                    </div>
+                `;
+                
+                // Spesifik gen testleri (eğer varsa)
+                if (c.germline && c.germline.includes('BRCA1') || c.germline.includes('BRCA2')) {
+                    germlineHtml += `
+                        <div class="option" onclick="selectTest('brca')">
+                            <span class="option-icon">🎀</span>
+                            <div class="option-title">BRCA1/2 Spesifik Test</div>
+                            <div class="option-desc">Yalnızca BRCA genleri için hedeflenmiş analiz</div>
+                            <div class="option-tags"><span class="tag">BRCA1</span><span class="tag">BRCA2</span></div>
+                        </div>
+                    `;
+                }
+                
+                if (c.germline && c.germline.some(g => g.includes('Lynch') || ['MLH1', 'MSH2', 'MSH6', 'PMS2'].includes(g))) {
+                    germlineHtml += `
+                        <div class="option" onclick="selectTest('lynch')">
+                            <span class="option-icon">🧬</span>
+                            <div class="option-title">Lynch Sendromu Paneli</div>
+                            <div class="option-desc">MMR genleri ve mikrosatellit instabilite analizi</div>
+                            <div class="option-tags"><span class="tag">MMR</span><span class="tag">MSI</span></div>
+                        </div>
+                    `;
+                }
+                
+                container.innerHTML = germlineHtml;
+            } else {
+                // Somatik test seçenekleri
+                let html = `
+                    <div class="option" onclick="selectTest('somatic')">
+                        <span class="option-icon">🔬</span>
+                        <div class="option-title">Kapsamlı Tümör Genetiği (NGS)</div>
+                        <div class="option-desc">Tedavi seçenekleri için somatik mutasyon analizi</div>
+                        <div class="option-tags">
+                            ${c.somatic && c.somatic.length > 0 ? c.somatic.slice(0, 4).map(s => `<span class="tag">${s}</span>`).join('') : '<span class="tag">NGS Panel</span>'}
+                        </div>
+                    </div>
+                `;
+                
+                // Sıvı biyopsi seçeneği (belirli kanserlerde)
+                const liquidBiopsyCancers = ['lung_nsclc', 'colon', 'breast', 'prostate', 'bladder', 'renal_cell', 'head_neck', 'melanoma_cutaneous', 'pancreatic', 'ovarian'];
+                if (liquidBiopsyCancers.includes(state.cancer)) {
+                    html += `
+                        <div class="option" onclick="selectTest('liquid')">
+                            <span class="option-icon">💉</span>
+                            <div class="option-title">Sıvı Biyopsi (ctDNA)</div>
+                            <div class="option-desc">Kandan dolaşan tümör DNA analizi - Non-invaziv</div>
+                            <div class="option-tags">
+                                <span class="tag">Non-invaziv</span>
+                                <span class="tag">Tekrarlanabilir</span>
+                                <span class="tag">MRD</span>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // İmmünoterapi biyobelirteçleri
+                html += `
+                    <div class="option" onclick="selectTest('immunotherapy')">
+                        <span class="option-icon">🛡️</span>
+                        <div class="option-title">İmmünoterapi Paneli</div>
+                        <div class="option-desc">PD-L1, TMB, MSI ve immünoterapi yanıt belirteçleri</div>
+                        <div class="option-tags"><span class="tag">PD-L1</span><span class="tag">TMB</span><span class="tag">MSI</span></div>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            }
+        }
+
+        function selectTest(test) {
+            state.test = test;
+            populateLabs();
+            showStep(4);
+        }
+
+        function populateLabs() {
+            const container = document.getElementById('labOptions');
+            const continueBtn = document.getElementById('continueBtn');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            selectedLabId = null;
+            state.lab = null;
+            if (continueBtn) continueBtn.disabled = true;
+            
+            // Test tipine göre uygun laboratuvarları filtrele
+            let suitableLabs = labs;
+            if (state.test === 'liquid') {
+                suitableLabs = labs.filter(l => l.tests.some(t => t.includes('Likit') || t.includes('Sıvı') || t.includes('Streptek')));
+            } else if (state.test === 'germline' || state.test === 'brca' || state.test === 'lynch') {
+                suitableLabs = labs.filter(l => l.tests.some(t => t.includes('BRCA') || t.includes('WES') || t.includes('360')));
+            }
+            
+            suitableLabs.forEach(lab => {
+                const div = document.createElement('div');
+                div.className = 'lab-option';
+                div.onclick = () => selectLab(lab.id, div);
+                div.innerHTML = `
+                    <div class="lab-name">${lab.name}</div>
+                    <div class="lab-loc">📍 ${lab.loc}</div>
+                    <div class="lab-tests">
+                        ${lab.tests.slice(0, 3).map(t => `<span class="lab-test-tag">${t}</span>`).join('')}
+                    </div>
+                    <div class="lab-features">
+                        ${lab.features.map(f => `<span>⭐ ${f}</span>`).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectLab(labId, element) {
+            // Önceki seçimi kaldır
+            document.querySelectorAll('.lab-option').forEach(el => el.classList.remove('selected'));
+            
+            // Yeni seçimi işaretle
+            element.classList.add('selected');
+            selectedLabId = labId;
+            state.lab = labs.find(l => l.id === labId);
+            
+            // Devam butonunu aktifleştir
+            const continueBtn = document.getElementById('continueBtn');
+            if (continueBtn) continueBtn.disabled = false;
+        }
+
+        function goToSample() {
+            if (!state.lab) return;
+            populateSampleInstructions();
+            showStep(5);
+        }
+
+        function populateSampleInstructions() {
+            const lab = state.lab;
+            const container = document.getElementById('sampleInstructions');
+            const alertBox = document.getElementById('sampleAlert');
+            const labDisplay = document.getElementById('selectedLabDisplay');
+            
+            if (!container || !alertBox || !labDisplay) return;
+            
+            labDisplay.innerHTML = `
+                <div class="selected-lab-info">
+                    <h4>Seçilen Laboratuvar</h4>
+                    <div class="lab-name-big">${lab.name}</div>
+                    <div style="margin-top: 8px; opacity: 0.9; font-size: 14px;">
+                        📞 ${lab.contact} | 📍 ${lab.loc}
+                    </div>
+                </div>
+            `;
+            
+            let instructionsHtml = '';
+            let alertText = '';
+            
+            if (state.test === 'germline' || state.test === 'brca' || state.test === 'lynch') {
+                instructionsHtml = `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>🩸</span>Kan Örneği (EDTA)</div>
+                        <ul class="sample-list">
+                            <li>Mor kapaklı EDTA tüp (2-5 ml)</li>
+                            <li>Açlık gerekmez</li>
+                            <li>Oda ısısında gönderim (24 saat içinde)</li>
+                            <li>Sonuç süresi: 2-4 hafta</li>
+                            <li>Genetik danışmanlık önerilir</li>
+                        </ul>
+                    </div>
+                    ${lab.sampleTypes.includes('Tükürük') ? `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>💧</span>Tükürük Örneği (Saliva)</div>
+                        <ul class="sample-list">
+                            <li>Özel toplama kiti (laboratuvardan temin)</li>
+                            <li>Açlık gerekmez (yemekten 30 dk sonra)</li>
+                            <li>Evde toplanabilir</li>
+                            <li>Çocuklar ve damar yolu zorluğu olanlar için ideal</li>
+                        </ul>
+                    </div>
+                    ` : ''}
+                `;
+                alertText = `⚠️ Kalıtsal testler için ${lab.name} ile önceden randevu alın. Aile öyküsü detayları ve genetik danışmanlık hizmeti hakkında bilgi alın.`;
+            } else if (state.test === 'somatic' || state.test === 'immunotherapy') {
+                instructionsHtml = `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>🧊</span>Parafin Blok (FFPE)</div>
+                        <ul class="sample-list">
+                            <li>Patoloji arşivinden temin edilir</li>
+                            <li>Tümör hücre oranı >20% olmalı</li>
+                            <li>5-10 unstained slide (4-5 mikron) veya blok</li>
+                            <li>H&E boyalı slayt ekinde gönderilmeli</li>
+                            <li>Patoloji raporu zorunlu</li>
+                        </ul>
+                    </div>
+                    ${lab.sampleTypes.includes('Taze Doku') ? `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>🔴</span>Taze Biyopsi (Snap-frozen)</div>
+                        <ul class="sample-list">
+                            <li>Formaldehit içermeyen ortamda (RNA analizi için)</li>
+                            <li>Sıvı azotta snap-freeze veya -80°C</li>
+                            <li>Soğuk zincir (kuru buz) ile gönderim</li>
+                            <li>Lab ile önceden iletişim kurun</li>
+                        </ul>
+                    </div>
+                    ` : ''}
+                `;
+                alertText = `⚠️ ${lab.name} için patoloji raporu ve H&E boyalı slayt da gönderilmelidir. Tümör içeriği düşük örneklerde test başarısız olabilir. Tümör hücre oranını patolog onaylatın.`;
+            } else if (state.test === 'liquid') {
+                instructionsHtml = `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>💉</span>Sıvı Biyopsi - Streptek</div>
+                        <ul class="sample-list">
+                            <li>Özel cfDNA toplama tüpü (Streptek veya benzeri)</li>
+                            <li>2 tüp (her biri 10 ml) = Toplam 20 ml tam kan</li>
+                            <li>İnvaziv işlem gerekmez</li>
+                            <li>Tüp sallanmadan gönderilmeli</li>
+                            <li>Oda ısısında 48 saat içinde laba ulaşmalı</li>
+                        </ul>
+                    </div>
+                    <div class="sample-box">
+                        <div class="sample-title"><span>📋</span>Uygulama Zamanı</div>
+                        <ul class="sample-list">
+                            <li>Tanı konulamadığında (liquid-first)</li>
+                            <li>Metastaz takibinde (her 3-6 ay)</li>
+                            <li>Rezistans gelişiminde</li>
+                            <li>MRD (Minimal Residual Disease) izlemi</li>
+                        </ul>
+                    </div>
+                `;
+                alertText = `⚠️ ${lab.name} ile önceden iletişime geçerek Streptek tüp temin edin. Sıvı biyopsi tümör dokusuna ulaşılamadığında veya tekrarlayan örnekleme gerektiğinde idealdir.`;
+            }
+            
+            container.innerHTML = instructionsHtml;
+            alertBox.innerHTML = alertText;
+        }
+
+        function goToResults() {
+            populateResults();
+            showStep(6);
+        }
+
+        function populateResults() {
+            const container = document.getElementById('treatmentResults');
+            if (!container || !state.cancer) return;
+            
+            const c = cancers[state.cancer];
+            if (!c) return;
+            
+            let html = '';
+            
+            if (state.test === 'germline' || state.test === 'brca' || state.test === 'lynch') {
+                // Kalıtsal test sonuçları
+                html = `
+                    <div class="treatment-card">
+                        <div class="treatment-title"><span>✅</span>Pozitif Bulgu (Patojenik/Patojenik Olası Varyant)</div>
+                        <ul class="treatment-list">
+                            <li><strong>Yüksek Risk:</strong> BRCA1/2, TP53, Lynch genleri, PALB2, CDH1</li>
+                            <li><strong>Orta Risk:</strong> CHEK2, ATM, NBN, BARD1, RAD51C/D</li>
+                            <li><strong>Tedavi Etkisi:</strong> PARP inhibitörleri (BRCA), Platin duyarlılığı (BRCA)</li>
+                            <li><strong>Aile Taraması:</strong> Birinci derece akrabalar test edilmeli</li>
+                            <li><strong>Risk Azaltma:</strong> Artırılmış tarama, Profilaktik cerrahi (mastektomi, ooforektomi)</li>
+                        </ul>
+                    </div>
+                    <div class="treatment-card" style="border-left-color: #ff9800;">
+                        <div class="treatment-title" style="color: #ff9800;"><span>⚠️</span>VUS (Varyantın Önemi Belirsiz)</div>
+                        <ul class="treatment-list">
+                            <li>Çok genli panelde sık karşılaşılır</li>
+                            <li>İşlevsel çalışmalar ve aile segregasyonu önerilir</li>
+                            <li>Veri paylaşım veritabanlarına kayıt (ClinVar vb.)</li>
+                            <li>Periyodik yeniden sınıflandırma takibi</li>
+                        </ul>
+                    </div>
+                    <div class="treatment-card" style="border-left-color: #4caf50;">
+                        <div class="treatment-title" style="color: #4caf50;"><span>❌</span>Negatif (Varyant Saptanmadı)</div>
+                        <ul class="treatment-list">
+                            <li>Aile öyküsü güçlüyse çok genli panel değerlendirilir</li>
+                            <li>Test edilmeyen genler (örn. ATM, CHEK2) için özel test</li>
+                            <li>Oligojenik/multifaktöriyel risk değerlendirmesi</li>
+                            <li>Polijenik risk skoru (PRS) hesaplanabilir</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (state.test === 'somatic') {
+                // Somatik test sonuçları
+                const treatmentEntries = c.treatments ? Object.entries(c.treatments) : [];
+                if (treatmentEntries.length > 0) {
+                    html = treatmentEntries.map(([marker, treat]) => `
+                        <div class="treatment-card">
+                            <div class="treatment-title"><span>🎯</span>${marker}</div>
+                            <div style="font-size: 14px; color: #555; margin-top: 8px; padding-left: 28px;">
+                                ${treat}
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    html = `
+                        <div class="treatment-card">
+                            <div class="treatment-title"><span>🧬</span>Genetik Profil</div>
+                            <div style="font-size: 14px; color: #555; margin-top: 8px;">
+                                Bu kanser türü için spesifik hedefe yönelik tedavi seçenekleri sınırlıdır. Standart kemoterapi ve radyoterapi protokolleri uygulanır.
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // İmmünoterapi bilgisi ekle
+                html += `
+                    <div class="treatment-card" style="border-left-color: #ff9800;">
+                        <div class="treatment-title" style="color: #ff9800;"><span>🛡️</span>İmmünoterapi Biyobelirteçleri</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 8px;">
+                            <strong>TMB (Tümör Mutasyon Yükü):</strong> Yüksek TMB (>10 mut/Mb) = İmmünoterapiye daha iyi yanıt<br><br>
+                            <strong>MSI-H/dMMR:</strong> Mikrosatellit instabilite = PD-1 inhibitörleri ilk seçenek<br><br>
+                            <strong>PD-L1 Ekspresyonu:</strong> CPS veya TPS skoruna göre pembrolizumab endikasyonu
+                        </div>
+                    </div>
+                `;
+            } else if (state.test === 'liquid') {
+                html = `
+                    <div class="treatment-card">
+                        <div class="treatment-title"><span>📉</span>Sıvı Biyopsi İzlemi ve Yorumu</div>
+                        <ul class="treatment-list">
+                            <li><strong>ctDNA Düşüşü:</strong> Tedaviye yanıt göstergesi (moleküler yanıt)</li>
+                            <li><strong>ctDNA Artışı:</strong> Progresyon / Rezistans belirtisi (klinik radyolojik bulgulardan önce)</li>
+                            <li><strong>Yeni Mutasyon:</strong> Tedavi değişikliği gerekliliği (örn. EGFR T790M, ALK füzyon)</li>
+                            <li><strong>MRD Pozitiflik:</strong> Rezidüel hastalık, adjuvan tedavi kararını etkiler</li>
+                            <li><strong>Genomik Profil:</strong> Tümör heterojenitesini yansıtır (farklı metastatik bölgelerden)</li>
+                        </ul>
+                    </div>
+                    <div class="treatment-card" style="border-left-color: #2196f3;">
+                        <div class="treatment-title" style="color: #2196f3;"><span>🔄</span>Dinamik İzlem</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 8px;">
+                            Sıvı biyopsi tekrarlanabilir özelliği sayesinde tedavi boyunca klonal evolüsyon takip edilebilir. 
+                            Her 3-6 ayda bir örnekleme önerilir.
+                        </div>
+                    </div>
+                `;
+            } else if (state.test === 'immunotherapy') {
+                html = `
+                    <div class="treatment-card">
+                        <div class="treatment-title"><span>🛡️</span>İmmünoterapi Panel Sonuçları</div>
+                        <ul class="treatment-list">
+                            <li><strong>PD-L1 Pozitif:</strong> Pembrolizumab, Nivolumab endikasyonu</li>
+                            <li><strong>MSI-H/dMMR:</strong> Pembrolizumab, Dostarlimab (tümör türü bağımsız)</li>
+                            <li><strong>TMB-Yüksek (>10 mut/Mb):</strong> Pembrolizumab (tümör türü bağımsız)</li>
+                            <li><strong>İnflamatuar Gen İfadesi:</strong> İmmünoterapi yanıt prediksiyonu</li>
+                        </ul>
+                    </div>
+                `;
+            }
+            
+            container.innerHTML = html;
+        }
+
+        function goBack(n) {
+            showStep(n);
+        }
+
+        function resetApp() {
+            state = { stage: null, cancer: null, test: null, lab: null };
+            selectedLabId = null;
+            const searchInput = document.getElementById('cancerSearch');
+            if (searchInput) searchInput.value = '';
+            showStep(1);
+        }
+
+        // Başlangıç
+        showStep(1);
+    </script>
+</body>
+</html>
