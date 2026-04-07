@@ -1,0 +1,619 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#667eea">
+    <title>OncoGuide - Kanser Genetik Test Rehberi</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #333; line-height: 1.6; overflow-x: hidden; }
+        .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 20px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 20px rgba(0,0,0,0.1); }
+        .header h1 { font-size: 24px; font-weight: 700; }
+        .header p { font-size: 14px; opacity: 0.9; margin-top: 4px; }
+        .progress-bar { height: 4px; background: rgba(255,255,255,0.3); margin-top: 10px; }
+        .progress-fill { height: 100%; background: white; transition: width 0.3s ease; }
+        .container { padding: 16px; padding-bottom: 100px; }
+        .card { background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); animation: slideUp 0.4s ease; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .step-header { display: flex; align-items: center; margin-bottom: 20px; }
+        .step-number { width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px; font-size: 18px; }
+        .step-title { font-size: 20px; font-weight: 700; color: #1a1a1a; }
+        .step-subtitle { font-size: 14px; color: #666; margin-top: 4px; }
+        .option { background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; }
+        .option:active { transform: scale(0.98); }
+        .option.selected { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-color: transparent; }
+        .option-icon { font-size: 24px; margin-bottom: 8px; display: block; }
+        .option-title { font-weight: 600; font-size: 16px; margin-bottom: 4px; }
+        .option-desc { font-size: 13px; opacity: 0.8; line-height: 1.4; }
+        .option-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .tag { background: rgba(102, 126, 234, 0.1); color: #667eea; padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 500; }
+        .option.selected .tag { background: rgba(255,255,255,0.2); color: white; }
+        .category-title { font-size: 14px; font-weight: 700; color: #667eea; margin: 20px 0 12px 0; text-transform: uppercase; letter-spacing: 1px; }
+        .lab-option { background: white; border: 2px solid #e9ecef; border-radius: 12px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all 0.2s; position: relative; }
+        .lab-option:active { transform: scale(0.98); }
+        .lab-option.selected { border-color: #667eea; background: #f0f4ff; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2); }
+        .lab-option.selected::after { content: "✓"; position: absolute; top: 10px; right: 10px; background: #667eea; color: white; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: bold; }
+        .lab-name { font-weight: 700; font-size: 17px; color: #1a1a1a; margin-bottom: 4px; }
+        .lab-option.selected .lab-name { color: #667eea; }
+        .lab-loc { font-size: 13px; color: #666; margin-bottom: 8px; }
+        .lab-tests { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 8px; }
+        .lab-test-tag { background: #e3f2fd; color: #1976d2; padding: 3px 8px; border-radius: 12px; font-size: 11px; }
+        .lab-option.selected .lab-test-tag { background: #667eea; color: white; }
+        .lab-features { font-size: 12px; color: #888; }
+        .lab-features span { margin-right: 10px; }
+        .sample-box { background: #f8f9fa; border-radius: 12px; padding: 16px; margin-bottom: 12px; border: 2px solid #e9ecef; }
+        .sample-title { font-weight: 700; margin-bottom: 10px; display: flex; align-items: center; font-size: 15px; color: #333; }
+        .sample-title span { margin-right: 8px; font-size: 20px; }
+        .sample-list { list-style: none; font-size: 14px; }
+        .sample-list li { padding: 6px 0; padding-left: 24px; position: relative; color: #555; }
+        .sample-list li:before { content: "✓"; position: absolute; left: 0; color: #4caf50; font-weight: bold; }
+        .alert { background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 8px; padding: 14px; margin: 16px 0; font-size: 13px; color: #856404; }
+        .btn { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; padding: 16px; border-radius: 12px; width: 100%; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4); }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-secondary { background: white; color: #667eea; border: 2px solid #667eea; box-shadow: none; }
+        .btn-back { background: transparent; color: #666; border: none; padding: 12px; font-size: 14px; display: flex; align-items: center; justify-content: center; width: 100%; margin-top: 12px; }
+        .hidden { display: none !important; }
+        .treatment-card { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; border-left: 4px solid #667eea; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .treatment-title { font-weight: 700; font-size: 16px; color: #667eea; margin-bottom: 10px; display: flex; align-items: center; }
+        .treatment-title span { margin-right: 8px; }
+        .treatment-list { list-style: none; }
+        .treatment-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; display: flex; align-items: start; }
+        .treatment-list li:last-child { border-bottom: none; }
+        .treatment-list li:before { content: "💊"; margin-right: 8px; font-size: 12px; }
+        .warning-box { background: linear-gradient(135deg, #f3e5f5 0%, #e1bee7 100%); border-radius: 16px; padding: 20px; margin-top: 20px; border: 2px solid #ce93d8; }
+        .warning-title { font-weight: 700; color: #6a1b9a; margin-bottom: 10px; display: flex; align-items: center; }
+        .warning-title span { margin-right: 8px; font-size: 20px; }
+        .warning-text { font-size: 14px; color: #4a148c; line-height: 1.6; }
+        .selected-lab-info { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+        .selected-lab-info h4 { font-size: 14px; opacity: 0.9; margin-bottom: 4px; }
+        .selected-lab-info .lab-name-big { font-size: 20px; font-weight: 700; }
+        .footer { text-align: center; padding: 30px 20px; color: #999; font-size: 12px; }
+        .search-box { width: 100%; padding: 12px 16px; border: 2px solid #e9ecef; border-radius: 12px; font-size: 16px; margin-bottom: 16px; }
+        .search-box:focus { outline: none; border-color: #667eea; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🧬 OncoGuide</h1>
+        <p>Kanser Genetik Test Rehberi - Tüm Kanser Türleri</p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+    </div>
+    <div class="container">
+        <div id="step1" class="step-content">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">1</div>
+                    <div>
+                        <div class="step-title">Durumunuz</div>
+                        <div class="step-subtitle">Hangi aşamadasınız?</div>
+                    </div>
+                </div>
+                <div class="option" onclick="selectStage('risk')">
+                    <span class="option-icon">⚠️</span>
+                    <div class="option-title">Kanser Riski Taşıyorum</div>
+                    <div class="option-desc">Ailede kanser öyküsü var, henüz tanı konulmadı</div>
+                    <div class="option-tags"><span class="tag">Aile Öyküsü</span><span class="tag">Tarama</span></div>
+                </div>
+                <div class="option" onclick="selectStage('diagnosed')">
+                    <span class="option-icon">🔬</span>
+                    <div class="option-title">Kanser Tanım Var</div>
+                    <div class="option-desc">Tedavi planlaması için genetik test gerekiyor</div>
+                    <div class="option-tags"><span class="tag">Tedavi</span><span class="tag">Hedefe Yönelik</span></div>
+                </div>
+            </div>
+        </div>
+        <div id="step2" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">2</div>
+                    <div>
+                        <div class="step-title">Kanser Türü</div>
+                        <div class="step-subtitle">Hangi kanser için test yapılacak?</div>
+                    </div>
+                </div>
+                <input type="text" class="search-box" id="cancerSearch" placeholder="Kanser türü ara..." onkeyup="filterCancers()">
+                <div id="cancerOptions"></div>
+                <button class="btn btn-back" onclick="goBack(1)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step3" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">3</div>
+                    <div>
+                        <div class="step-title">Test Türü</div>
+                        <div class="step-subtitle" id="testSubtitle">Test amacını seçin</div>
+                    </div>
+                </div>
+                <div id="testOptions"></div>
+                <button class="btn btn-back" onclick="goBack(2)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step4" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">4</div>
+                    <div>
+                        <div class="step-title">Laboratuvar Seçimi</div>
+                        <div class="step-subtitle">Testi hangi merkeze göndereceksiniz?</div>
+                    </div>
+                </div>
+                <div id="labOptions"></div>
+                <button class="btn" id="continueBtn" onclick="goToSample()" disabled>Devam Et →</button>
+                <button class="btn btn-back" onclick="goBack(3)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step5" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">5</div>
+                    <div>
+                        <div class="step-title">Numune Hazırlama</div>
+                        <div class="step-subtitle">Seçilen laboratuvar için talimatlar</div>
+                    </div>
+                </div>
+                <div id="selectedLabDisplay"></div>
+                <div id="sampleInstructions"></div>
+                <div class="alert" id="sampleAlert"></div>
+                <button class="btn" onclick="goToResults()">Sonuçları Gör →</button>
+                <button class="btn btn-back" onclick="goBack(4)">← Geri Dön</button>
+            </div>
+        </div>
+        <div id="step6" class="step-content hidden">
+            <div class="card">
+                <div class="step-header">
+                    <div class="step-number">6</div>
+                    <div>
+                        <div class="step-title">Sonuç ve Tedavi</div>
+                        <div class="step-subtitle">Olası bulgular ve yaklaşımlar</div>
+                    </div>
+                </div>
+                <div id="treatmentResults"></div>
+                <div class="warning-box">
+                    <div class="warning-title"><span>👨‍⚕️</span>Genetik Danışmanlık Şart</div>
+                    <div class="warning-text">Test sonuçlarınız mutlaka bir <strong>Tıbbi Genetik Uzmanı</strong> veya <strong>Onkolog</strong> tarafından değerlendirilmelidir.</div>
+                </div>
+                <button class="btn" onclick="resetApp()">🔄 Yeni Rehberlik</button>
+                <button class="btn btn-back" onclick="goBack(5)">← Geri Dön</button>
+            </div>
+        </div>
+        <div class="footer">
+            <p>⚠️ Bu uygulama bilgilendirme amaçlıdır.</p>
+            <p>Tıbbi tavsiye yerine geçmez.</p>
+            <p style="margin-top: 10px;">© 2025 OncoGuide Türkiye - Tüm Kanser Türleri</p>
+        </div>
+    </div>
+    <script>
+        let state = { stage: null, cancer: null, test: null, lab: null };
+        let selectedLabId = null;
+        
+        const cancers = {
+            breast: { name: "Meme Kanseri", icon: "🎀", category: "Meme", germline: ["BRCA1/2", "PALB2", "TP53", "CHEK2"], somatic: ["PIK3CA", "HER2", "ESR1", "AKT1", "PTEN"], treatments: { "PIK3CA+": "Alpelisib", "HER2+": "Trastuzumab/Pertuzumab", "ESR1+": "Elacestrant", "BRCA Somatic": "PARP inhibitörleri" } },
+            breast_male: { name: "Erkek Meme Kanseri", icon: "🎀", category: "Meme", germline: ["BRCA1/2", "CHEK2"], somatic: ["PIK3CA", "HER2", "ESR1"], treatments: { "BRCA+": "PARP inhibitörleri", "HER2+": "Trastuzumab" } },
+            ovarian: { name: "Yumurtalık (Over) Kanseri", icon: "⚪", category: "Jinekolojik", germline: ["BRCA1/2", "RAD51C/D", "BRIP1", "PALB2"], somatic: ["BRCA1/2", "HRD", "TP53"], treatments: { "BRCA+": "Olaparib/Niraparib", "HRD+": "PARP inhibitörleri", "MSI-H": "Pembrolizumab" } },
+            cervical: { name: "Rahim Ağzı (Serviks) Kanseri", icon: "🔴", category: "Jinekolojik", germline: [], somatic: ["HPV", "PIK3CA", "PTEN", "KRAS", "EGFR"], treatments: { "PD-L1+": "Pembrolizumab", "EGFR+": "Cetuximab", "MSI-H": "İmmünoterapi" } },
+            endometrial: { name: "Rahim İçi (Endometriyum) Kanseri", icon: "🟠", category: "Jinekolojik", germline: ["Lynch (MMR)"], somatic: ["PTEN", "PIK3CA", "KRAS", "MSI", "POLE"], treatments: { "MSI-H/dMMR": "Pembrolizumab/Dostarlimab", "POLE": "İyi prognoz", "HER2+": "Trastuzumab" } },
+            vulvar: { name: "Vulva Kanseri", icon: "🔴", category: "Jinekolojik", germline: [], somatic: ["HPV", "PIK3CA", "TP53"], treatments: { "PD-L1+": "Pembrolizumab", "EGFR+": "Cetuximab" } },
+            vaginal: { name: "Vajina Kanseri", icon: "🔴", category: "Jinekolojik", germline: [], somatic: ["HPV", "PIK3CA"], treatments: { "PD-L1+": "Pembrolizumab" } },
+            gestational: { name: "Gestasyonel Trofoblastik Hastalık", icon: "🤰", category: "Jinekolojik", germline: [], somatic: ["TP53"], treatments: { "Low Risk": "Metotreksat", "High Risk": "EMA-CO" } },
+            colon: { name: "Kolon Kanseri", icon: "🔵", category: "Gastrointestinal", germline: ["Lynch (MLH1/MSH2/MSH6/PMS2)", "FAP (APC)", "MUTYH"], somatic: ["KRAS", "NRAS", "BRAF", "MSI", "HER2", "NTRK"], treatments: { "RAS Wild": "Cetuximab/Panitumumab", "BRAF V600E": "Encorafenib+Cetuximab", "MSI-H": "Pembrolizumab", "HER2+": "Trastuzumab" } },
+            rectal: { name: "Rektum Kanseri", icon: "🟤", category: "Gastrointestinal", germline: ["Lynch"], somatic: ["KRAS", "NRAS", "BRAF", "MSI"], treatments: { "RAS Wild": "Cetuximab", "MSI-H": "İmmünoterapi" } },
+            anal: { name: "Anal Kanser", icon: "🟤", category: "Gastrointestinal", germline: [], somatic: ["HPV", "PIK3CA", "KRAS"], treatments: { "PD-L1+": "Pembrolizumab", "Standard": "Cisplatin+5FU" } },
+            lung_nsclc: { name: "Akciğer Kanseri (NSCLC)", icon: "🫁", category: "Akciğer", germline: [], somatic: ["EGFR", "ALK", "ROS1", "BRAF", "MET", "RET", "KRAS", "PD-L1", "NTRK", "HER2"], treatments: { "EGFR+": "Osimertinib", "ALK+": "Alectinib", "ROS1+": "Crizotinib", "BRAF V600E": "Dabrafenib+Trametinib", "MET+": "Capmatinib", "RET+": "Selpercatinib", "KRAS G12C": "Sotorasib", "PD-L1>50%": "Pembrolizumab" } },
+            lung_sclc: { name: "Akciğer Kanseri (SCLC)", icon: "🫁", category: "Akciğer", germline: [], somatic: ["TP53", "RB1"], treatments: { "Extensive": "Etoposid+Platin", "Limited": "Kemoradyoterapi" } },
+            mesothelioma: { name: "Mezotelyoma", icon: "🫁", category: "Akciğer", germline: [], somatic: ["BAP1", "NF2", "TP53"], treatments: { "Standard": "Pemetrexed+Cisplatin", "PD-L1+": "Nivolumab+Ipilimumab" } },
+            thymoma: { name: "Timoma/Timik Karsinom", icon: "🫁", category: "Akciğer", germline: [], somatic: ["GTF2I", "TP53"], treatments: { "Resectable": "Cerrahi", "Advanced": "CAP" } },
+            prostate: { name: "Prostat Kanseri", icon: "🚹", category: "Ürogenital", germline: ["BRCA1/2", "HOXB13", "ATM", "CHEK2"], somatic: ["BRCA1/2", "ATM", "HRR", "AR", "PTEN"], treatments: { "BRCA/HRR+": "Olaparib/Rucaparib", "mCRPC": "Enzalutamid/Abirateron", "MSI-H": "Pembrolizumab" } },
+            testicular: { name: "Testis Kanseri", icon: "🚹", category: "Ürogenital", germline: [], somatic: ["KIT", "KRAS", "TP53"], treatments: { "Seminoma": "Platin bazlı", "Non-seminoma": "BEP/EP", "KIT+": "İmatinib" } },
+            penile: { name: "Penis Kanseri", icon: "🚹", category: "Ürogenital", germline: [], somatic: ["HPV", "PIK3CA"], treatments: { "HPV+": "Pembrolizumab", "EGFR+": "Cetuximab" } },
+            renal_cell: { name: "Böbrek Hücreli Karsinom (RCC)", icon: "🫘", category: "Ürogenital", germline: ["VHL", "BHD", "HPRC"], somatic: ["VHL", "PBRM1", "BAP1", "MET", "FH"], treatments: { "Clear Cell": "Sunitinib/Pembrolizumab+Axitinib", "MET+": "Cabozantinib", "FH-deficient": "Bevacizumab+erlotinib" } },
+            renal_papillary: { name: "Papiller Böbrek Kanseri", icon: "🫘", category: "Ürogenital", germline: ["MET", "FH"], somatic: ["MET", "CDKN2A"], treatments: { "MET+": "Savolitinib", "Type 2": "Cabozantinib" } },
+            bladder: { name: "Mesane (İdrar Torbası) Kanseri", icon: "🟡", category: "Ürogenital", germline: ["Lynch"], somatic: ["FGFR3", "PIK3CA", "TP53", "TERT", "ERBB2"], treatments: { "FGFR3+": "Erdafitinib", "PD-L1+": "Pembrolizumab/Atezolizumab", "HER2+": "Trastuzumab deruxtecan", "MSI-H": "Pembrolizumab" } },
+            ureter: { name: "Üreter Kanseri", icon: "🟡", category: "Ürogenital", germline: ["Lynch"], somatic: ["FGFR3", "PIK3CA"], treatments: { "FGFR3+": "Erdafitinib", "MSI-H": "İmmünoterapi" } },
+            hcc: { name: "Karaciğer Hücreli Karsinom (HCC)", icon: "🫀", category: "Hepatobiliyer", germline: [], somatic: ["TP53", "CTNNB1", "TERT", "AXIN1"], treatments: { "Early": "Reseksiyon/Ablasyon", "Advanced": "Atezolizumab+Bevacizumab", "FGFR4+": "Fisogatinib" } },
+            cholangiocarcinoma: { name: "Kolangiokarsinom (Safra Yolu)", icon: "🫀", category: "Hepatobiliyer", germline: [], somatic: ["IDH1", "FGFR2", "BRAF", "HER2", "MSI"], treatments: { "IDH1+": "Ivosidenib", "FGFR2+": "Pemigatinib/Infigratinib", "BRAF V600E": "Dabrafenib+Trametinib", "HER2+": "Trastuzumab", "MSI-H": "Pembrolizumab" } },
+            gallbladder: { name: "Safra Kesesi Kanseri", icon: "🫀", category: "Hepatobiliyer", germline: [], somatic: ["ERBB2", "PIK3CA", "KRAS"], treatments: { "HER2+": "Trastuzumab", "BRAF+": "Dabrafenib+Trametinib", "MSI-H": "İmmünoterapi" } },
+            pancreatic: { name: "Pankreas Kanseri", icon: "🟣", category: "Gastrointestinal", germline: ["BRCA1/2", "PALB2", "CDKN2A", "Lynch", "ATM"], somatic: ["KRAS", "TP53", "CDKN2A", "SMAD4", "BRCA1/2"], treatments: { "BRCA/PALB2+": "Olaparib/Platin", "MSI-H": "Pembrolizumab", "NTRK+": "Larotrectinib", "Resectable": "FOLFIRINOX" } },
+            pancreatic_nec: { name: "Nöroendokrin Tümör (PNET)", icon: "🟣", category: "Gastrointestinal", germline: ["MEN1", "VHL", "NF1"], somatic: ["MEN1", "DAXX", "ATRX"], treatments: { "Grade 1-2": "Everolimus/Sunitinib", "Grade 3": "Platin+etoposid", "PRRT": "Lutetium" } },
+            gastric: { name: "Mide Kanseri", icon: "🟠", category: "Gastrointestinal", germline: ["CDH1", "Lynch"], somatic: ["HER2", "PD-L1", "EBV", "MSI", "CLDN18.2"], treatments: { "HER2+": "Trastuzumab", "PD-L1+": "Nivolumab", "MSI-H": "Pembrolizumab", "CLDN18.2+": "Zolbetuximab", "EBV+": "İmmünoterapi" } },
+            gej: { name: "Gastroözofageal Bileşke (GEJ)", icon: "🟠", category: "Gastrointestinal", germline: [], somatic: ["HER2", "PD-L1", "MSI"], treatments: { "HER2+": "Trastuzumab", "PD-L1+": "Pembrolizumab", "MSI-H": "İmmünoterapi" } },
+            esophageal: { name: "Özofagus (Yemek Borusu) Kanseri", icon: "🟠", category: "Gastrointestinal", germline: [], somatic: ["TP53", "PIK3CA", "PD-L1"], treatments: { "Squamous": "Pembrolizumab+Kemoterapi", "Adenokarsinom": "Trastuzumab (HER2+)" } },
+            thyroid_papillary: { name: "Papiller Tiroid Kanseri", icon: "🔴", category: "Tiroid", germline: [], somatic: ["BRAF V600E", "RET/PTC", "RAS", "TERT"], treatments: { "BRAF+": "Dabrafenib+Trametinib (RAIR)", "RET+": "Selpercatinib", "Radioaktif İyot": "I-131" } },
+            thyroid_follicular: { name: "Folliküler Tiroid Kanseri", icon: "🔴", category: "Tiroid", germline: [], somatic: ["RAS", "PAX8/PPAR"], treatments: { "RAS+": "Sorafenib/Lenvatinib", "Radioaktif İyot": "I-131" } },
+            thyroid_medullary: { name: "Medüller Tiroid Kanseri", icon: "🔴", category: "Tiroid", germline: ["RET", "MEN2"], somatic: ["RET", "RAS"], treatments: { "RET+": "Selpercatinib/Pralsetinib", "Vandetanib": "Vandetanib/Cabozantinib" } },
+            thyroid_anaplastic: { name: "Anaplastik Tiroid Kanseri", icon: "🔴", category: "Tiroid", germline: [], somatic: ["BRAF", "TP53", "TERT"], treatments: { "BRAF+": "Dabrafenib+Trametinib", "TRAIL": "Dabrafenib+Trametinib" } },
+            pituitary: { name: "Hipofiz Adenomu", icon: "🧠", category: "Nöroendokrin", germline: ["MEN1", "PRKAR1A", "AIP"], somatic: ["GNAS", "USP8"], treatments: { "Prolaktinoma": "Kabergolin", "Somatotrof": "Oktreotid/Lanreotid" } },
+            adrenal_cortical: { name: "Adrenal Korteks Kanseri", icon: "🫘", category: "Nöroendokrin", germline: ["TP53", "MEN1"], somatic: ["CTNNB1", "IGF2", "TP53"], treatments: { "Mitotan": "Mitotan", "EDP-M": "Etoposid+Doxorubicin+Cisplatin+Mitotan" } },
+            pheochromocytoma: { name: "Feokromositoma", icon: "🫘", category: "Nöroendokrin", germline: ["RET", "VHL", "NF1", "SDHx"], somatic: ["NF1", "RET"], treatments: { "Cerrahi": "Alfa/beta bloker sonrası cerrahi", "Metastatik": "MIBG/PRRT" } },
+            glioblastoma: { name: "Glioblastoma (GBM)", icon: "🧠", category: "Sinir Sistemi", germline: ["TP53", "NF1"], somatic: ["EGFR", "PTEN", "TP53", "IDH1", "MGMT"], treatments: { "MGMT Met": "Temozolomide", "IDH1 Mut": "Vorasidenib", "TTF": "Optune (Tumor Treating Fields)" } },
+            astrocytoma: { name: "Astrositoma (Düşük Derece)", icon: "🧠", category: "Sinir Sistemi", germline: ["IDH1/2", "TP53"], somatic: ["IDH1", "ATRX", "TP53", "CIC"], treatments: { "IDH Mut": "Vorasidenib", "BRAF+": "Dabrafenib+Trametinib" } },
+            oligodendroglioma: { name: "Oligodendrogliom", icon: "🧠", category: "Sinir Sistemi", germline: [], somatic: ["IDH1/2", "1p/19q kodelyasyon"], treatments: { "1p/19q+": "PCV kemoterapi", "IDH Mut": "Vorasidenib" } },
+            meningioma: { name: "Meningiom", icon: "🧠", category: "Sinir Sistemi", germline: ["NF2"], somatic: ["NF2", "TRAF7", "AKT1"], treatments: { "Surgery": "Cerrahi", "Radiation": "Radyoterapi", "Bevacizumab": "Bevacizumab" } },
+            medulloblastoma: { name: "Medulloblastom", icon: "🧠", category: "Sinir Sistemi", germline: ["TP53", "APC"], somatic: ["CTNNB1", "SHH", "MYC"], treatments: { "WNT": "İyi prognoz", "SHH": "Vismodegib (Sonic Hedgehog)" } },
+            ependymoma: { name: "Ependimom", icon: "🧠", category: "Sinir Sistemi", germline: [], somatic: ["NF2", "RELA"], treatments: { "PF-A": "Radyoterapi", "RELA": "Düşük risk" } },
+            osteosarcoma: { name: "Osteosarkom", icon: "🦴", category: "Kemik ve Yumuşak Doku", germline: ["RB1", "TP53"], somatic: ["TP53", "RB1"], treatments: { "Standard": "MAP (Metotreksat+Adriamisin+Platin)", "Recurrent": "Regorafenib" } },
+            ewing: { name: "Ewing Sarkom", icon: "🦴", category: "Kemik ve Yumuşak Doku", germline: [], somatic: ["EWSR1-FLI1", "EWSR1-ERG"], treatments: { "Standard": "VAC/IE (Vincristin+Adriamisin+Siklofosfamid)", "Recurrent": "Irinotekan+Temozolomide" } },
+            chondrosarcoma: { name: "Kondrosarkom", icon: "🦴", category: "Kemik ve Yumuşak Doku", germline: ["EXT1/2"], somatic: ["IDH1/2", "COL2A1"], treatments: { "IDH1/2 Mut": "Ivosidenib", "Dedifferentiated": "Kemoterapi" } },
+            liposarcoma: { name: "Liposarkom", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: [], somatic: ["MDM2", "CDK4", "DDLPS"], treatments: { "MDM2+": "Milademetan", "CDK4+": "Palbosiklib" } },
+            leiomyosarcoma: { name: "Leiyomiyosarkom", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: [], somatic: ["TP53", "RB1", "ATRX"], treatments: { "Doxorubicin": "Doksorubisin+İfosfamid", "Trabectedin": "Trabektedin" } },
+            synovial: { name: "Sinoviyal Sarkom", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: [], somatic: ["t(X;18)", "SS18-SSX"], treatments: { "Standard": "İfosfamid+Doksorubisin", "Pazopanib": "Pazopanib" } },
+            rhabdomyosarcoma: { name: "Rabdomiyosarkom", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: [], somatic: ["PAX3-FOXO1", "PAX7-FOXO1"], treatments: { "Alveolar": "VAC", "Embryonal": "VAC", "Fusion+": "Düşük risk" } },
+            gist: { name: "GIST (Gastrointestinal Stromal Tümör)", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: ["KIT", "PDGFRA", "SDHx"], somatic: ["KIT", "PDGFRA", "SDH"], treatments: { "KIT Exon 11": "İmatinib", "KIT Exon 9": "Yüksek doz İmatinib", "PDGFRA D842V": "Avapritinib", "SDH-deficient": "Sunitinib" } },
+            dfsp: { name: "Dermatofibrosarkoma Protuberans (DFSP)", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: [], somatic: ["COL1A1-PDGFB"], treatments: { "İmatinib": "İmatinib", "Surgery": "Geniş cerrahi" } },
+            desmoid: { name: "Desmoid Tümör", icon: "🥩", category: "Kemik ve Yumuşak Doku", germline: ["APC", "CTNNB1"], somatic: ["CTNNB1"], treatments: { "Sorafenib": "Sorafenib", "Nirogacestat": "Nirogacestat" } },
+            melanoma_cutaneous: { name: "Kutanöz Melanom", icon: "🟤", category: "Deri", germline: ["CDKN2A", "CDK4", "BAP1"], somatic: ["BRAF V600E", "NRAS", "KIT", "PD-L1", "TERT"], treatments: { "BRAF+": "Dabrafenib+Trametinib", "NRAS+": "Binimetinib", "KIT+": "İmatinib", "PD-L1+": "Pembrolizumab/Nivolumab", "Adjuvan": "Pembrolizumab" } },
+            melanoma_uveal: { name: "Üveal Melanom", icon: "👁️", category: "Deri", germline: ["BAP1"], somatic: ["GNAQ", "GNA11", "BAP1", "SF3B1"], treatments: { "GNAQ/11": "Tebentafusp", "Metastatik": "Selumetinib", "Liver mets": "İmmünoterapi" } },
+            melanoma_acral: { name: "Akral Melanom", icon: "🟤", category: "Deri", germline: [], somatic: ["KIT", "BRAF", "NRAS"], treatments: { "KIT+": "İmatinib/Nilotinib", "BRAF+": "Dabrafenib+Trametinib" } },
+            merkel: { name: "Merkel Hücreli Karsinom", icon: "🔴", category: "Deri", germline: [], somatic: ["MCPyV", "RB1", "TP53"], treatments: { "Avelumab": "Avelumab", "Pembrolizumab": "Pembrolizumab" } },
+            squamous_skin: { name: "Yüzeyel Skuamöz Hücreli Karsinom", icon: "🔴", category: "Deri", germline: [], somatic: ["TP53", "NOTCH", "CDKN2A"], treatments: { "Cemiplimab": "Cemiplimab", "Surgery": "Cerrahi" } },
+            basal_cell: { name: "Basal Hücreli Karsinom", icon: "🟡", category: "Deri", germline: ["PTCH1", "SUFU"], somatic: ["PTCH1", "SMO", "TP53"], treatments: { "Vismodegib": "Vismodegib/Sonidegib", "Surgery": "MOHS cerrahisi" } },
+            sebaceous: { name: "Sebasöz Karsinom", icon: "🟡", category: "Deri", germline: ["Muir-Torre"], somatic: ["MSI", "MMR"], treatments: { "MSI-H": "Pembrolizumab", "Surgery": "Cerrahi" } },
+            head_neck: { name: "Baş ve Boyun Kanserleri", icon: "👤", category: "Kafatası ve Yüz", germline: [], somatic: ["HPV", "TP53", "PIK3CA", "EGFR", "NOTCH"], treatments: { "HPV+": "Düşük risk, de-eskaleasyon", "EGFR+": "Cetuximab", "Pembrolizumab": "Pembrolizumab+Platin" } },
+            nasopharyngeal: { name: "Nazofarenks Kanseri", icon: "👃", category: "Kafatası ve Yüz", germline: [], somatic: ["EBV", "PIK3CA"], treatments: { "EBV+": "Kemoradyoterapi", "PD-1": "Toripalimab" } },
+            salivary_gland: { name: "Tükürük Bezi Kanseri", icon: "👄", category: "Kafatası ve Yüz", germline: [], somatic: ["HER2", "AR", "NTRK", "RET"], treatments: { "HER2+": "Trastuzumab", "AR+": "Androjen deprivasyonu", "NTRK+": "Larotrectinib" } },
+            sinonasal: { name: "Sinonazal Kanser", icon: "👃", category: "Kafatası ve Yüz", germline: [], somatic: ["IDH2", "SDH"], treatments: { "IDH2+": "Enasidenib", "Surgery": "Cerrahi+radyoterapi" } },
+            retinoblastoma: { name: "Retinoblastom", icon: "👁️", category: "Göz", germline: ["RB1"], somatic: ["RB1"], treatments: { "Intra-arterial": "İntra-arteriyel kemoterapi", "Intravitreal": "İntravitreal Melphalan" } },
+            uveal_melanoma: { name: "Üveal Melanom", icon: "👁️", category: "Göz", germline: ["BAP1"], somatic: ["GNAQ", "GNA11", "BAP1"], treatments: { "Plaque": "Plak radyoterapisi", "Enucleation": "Enükleasyon" } },
+            conjunctival: { name: "Konjunktival Kanser", icon: "👁️", category: "Göz", germline: [], somatic: ["HPV", "HIV"], treatments: { "Topikal": "İnterferon/Mitomisin", "Surgery": "Cerrahi" } },
+            all: { name: "Akut Lenfoblastik Lösemi (ALL)", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["BCR-ABL1", "KMT2A", "ETV6-RUNX1", "TCF3-PBX1", "Hypodiploidy"], treatments: { "BCR-ABL+": "İmatinib/Dasatinib", "CD19+": "Blinatumomab", "CD22+": "Inotuzumab" } },
+            aml: { name: "Akut Miyeloid Lösemi (AML)", icon: "🩸", category: "Hematolojik", germline: ["CEBPA", "DDX41", "RUNX1"], somatic: ["NPM1", "FLT3-ITD", "CEBPA", "TP53", "IDH1/2", "RUNX1-RUNX1T1", "PML-RARA"], treatments: { "PML-RARA": "ATRA+Arsenik", "FLT3-ITD": "Midostaurin", "IDH1/2": "Ivosidenib/Enasidenib", "NPM1": "İyi risk" } },
+            cll: { name: "Kronik Lenfositik Lösemi (KLL)", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["del(13q)", "del(11q)", "del(17p)", "TP53", "IGHV", "NOTCH1"], treatments: { "IGHV Mut": "İyi prognoz", "del(17p)": "Acalabrutinib/Venetoclax", "BTK": "İbrutinib/Acalabrutinib" } },
+            cml: { name: "Kronik Miyeloid Lösemi (KML)", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["BCR-ABL1", "T315I"], treatments: { "Chronic": "İmatinib/Dasatinib", "T315I": "Ponatinib", "Accelerated": "Asciminib" } },
+            myeloma: { name: "Multipl Miyelom", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["t(4;14)", "t(14;16)", "del(17p)", "1q+", "KRAS", "NRAS"], treatments: { "t(4;14)": "Bortezomib bazlı", "del(17p)": "Yüksek risk", "Anti-CD38": "Daratumumab/İsatumab" } },
+            lymphoma_dlbcl: { name: "Diffüz Büyük B Hücreli Lenfoma (DLBCL)", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["BCL2", "BCL6", "MYC", "TP53", "MYD88", "CD79B"], treatments: { "Double Hit": "DA-EPOCH-R", "R-CHOP": "R-CHOP", "CAR-T": "Axicabtagene ciloleucel" } },
+            lymphoma_fl: { name: "Folliküler Lenfoma", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["t(14;18)", "BCL2", "EZH2"], treatments: { "EZH2+": "Tazemetostat", "Rituximab": "R-Bendamustin", "PI3K": "Copanlisib" } },
+            lymphoma_mcl: { name: "Mantle Hücreli Lenfoma", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["t(11;14)", "CCND1", "TP53"], treatments: { "BTK": "İbrutinib/Zanubrutinib", "BCL2": "Venetoclax", "CAR-T": "Brexucabtagene autoleucel" } },
+            lymphoma_hl: { name: "Hodgkin Lenfoma", icon: "🩸", category: "Hematolojik", germline: [], somatic: ["RS cells", "EBV", "9p24.1"], treatments: { "ABVD": "ABVD", "BV": "Brentuximab vedotin", "PD-1": "Nivolumab/Pembrolizumab" } },
+            net_small_bowel: { name: "Küçük Bağırsak NET", icon: "🟢", category: "Nöroendokrin", germline: ["MEN1"], somatic: ["CDKN1B", "DAXX", "ATRX"], treatments: { "Somatostatin": "Oktreotid/Lanreotid", "PRRT": "Lutetium", "Everolimus": "Everolimus" } },
+            net_pancreatic: { name: "Pankreas NET", icon: "🟢", category: "Nöroendokrin", germline: ["MEN1", "VHL", "NF1"], somatic: ["MEN1", "DAXX", "ATRX"], treatments: { "Everolimus": "Everolimus", "Sunitinib": "Sunitinib", "PRRT": "Lutetium" } },
+            net_lung: { name: "Akciğer NET (Karsinoid)", icon: "🟢", category: "Nöroendokrin", germline: [], somatic: [], treatments: { "Somatostatin": "Oktreotid", "Everolimus": "Everolimus" } },
+            unknown_primary: { name: "Bilinmeyen Primerli Kanser (CUP)", icon: "❓", category: "Nadir", germline: [], somatic: ["FOXA2", "PAX8", "TTF1", "GATA3"], treatments: { "Colorectal-like": "FOLFOX", "Urothelial-like": "Platin bazlı", "Neuroendocrine": "Platin+etoposid" } }
+        };
+
+        const labs = [
+            { id: "nesiller", name: "Nesiller Genetik", loc: "İstanbul (Merkez)", tests: ["BRCA", "NGS", "WES", "WGS"], features: ["Online danışmanlık", "Hızlı sonuç (7-10 gün)", "Kapıdan örnek alım"], contact: "0212 123 45 67", sampleTypes: ["Kan", "Tükürük"] },
+            { id: "pathern", name: "Pathern Laboratuvarı", loc: "İstanbul (Ataşehir)", tests: ["1021 Gen Panel", "Likit Biyopsi", "FISH", "HRR/HRD"], features: ["Kapsamlı onkoloji paneli", "Kandan tümör DNA", "SGK anlaşmalı"], contact: "0216 123 45 67", sampleTypes: ["Doku", "Kan (Streptek)"] },
+            { id: "acibadem", name: "Acıbadem Genetik", loc: "İstanbul (Çok şube)", tests: ["Akciğer Paneli", "Likit Biyopsi", "PD-L1"], features: ["Hastane entegrasyonu", "Multidisipliner ekip", "Yüksek teknoloji"], contact: "0212 444 55 66", sampleTypes: ["Doku", "Kan"] },
+            { id: "medipol", name: "Medipol Medigen", loc: "İstanbul (Bağcılar)", tests: ["Solid Tümör NGS", "Hematoonkoloji", "Filyasyon"], features: ["Üniversite hastanesi", "Akademik altyapı", "Parafin blok uzmanlığı"], contact: "0212 444 44 44", sampleTypes: ["Parafin Blok", "Taze Doku"] },
+            { id: "istanbul", name: "İstanbul Laboratuvarları", loc: "Kadıköy & Şişli", tests: ["BRCA", "FISH", "Tümör Belirteçleri"], features: ["SGK indirimi (%50)", "Hızlı sonuç", "Kolay ulaşım"], contact: "0216 345 67 89", sampleTypes: ["Kan", "Tükürük"] },
+            { id: "genetiks", name: "Genetiks", loc: "İstanbul", tests: ["360 Gen Panel", "Kanser Genetiği", "Taşıyıcılık"], features: ["Yüksek çözünürlük", "Kapsamlı rapor", "Genetik danışmanlık"], contact: "0212 567 89 00", sampleTypes: ["Kan", "Tükürük"] }
+        ];
+
+        function showStep(n) {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('step' + n).classList.remove('hidden');
+            document.getElementById('progressBar').style.width = (n / 6 * 100) + '%';
+            window.scrollTo(0, 0);
+        }
+
+        function selectStage(stage) {
+            state.stage = stage;
+            showStep(2);
+            setTimeout(() => {
+                populateCancers();
+            }, 50);
+        }
+
+        function populateCancers() {
+            const container = document.getElementById('cancerOptions');
+            if (!container) {
+                console.error('cancerOptions elementi bulunamadı');
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            const categories = {};
+            Object.entries(cancers).forEach(([key, val]) => {
+                if (!categories[val.category]) categories[val.category] = [];
+                categories[val.category].push([key, val]);
+            });
+            
+            Object.entries(categories).forEach(([cat, items]) => {
+                const catTitle = document.createElement('div');
+                catTitle.className = 'category-title';
+                catTitle.textContent = cat;
+                container.appendChild(catTitle);
+                
+                items.forEach(([key, val]) => {
+                    const div = document.createElement('div');
+                    div.className = 'option';
+                    div.onclick = () => selectCancer(key);
+                    
+                    const germlineTag = val.germline && val.germline.length ? 
+                        `<span class="tag">Kalıtsal: ${val.germline[0]}</span>` : '';
+                    const somaticTag = val.somatic && val.somatic.length ? 
+                        `<span class="tag">Tedavi: ${val.somatic[0]}</span>` : '';
+                    
+                    div.innerHTML = `
+                        <span class="option-icon">${val.icon || '🔬'}</span>
+                        <div class="option-title">${val.name}</div>
+                        <div class="option-tags">
+                            ${germlineTag}
+                            ${somaticTag}
+                        </div>
+                    `;
+                    container.appendChild(div);
+                });
+            });
+        }
+
+        function filterCancers() {
+            const search = document.getElementById('cancerSearch').value.toLowerCase();
+            const options = document.querySelectorAll('#cancerOptions .option');
+            const titles = document.querySelectorAll('#cancerOptions .category-title');
+            
+            options.forEach(opt => {
+                const text = opt.textContent.toLowerCase();
+                opt.style.display = text.includes(search) ? 'block' : 'none';
+            });
+            
+            titles.forEach(title => {
+                let next = title.nextElementSibling;
+                let hasVisible = false;
+                while (next && !next.classList.contains('category-title')) {
+                    if (next.classList.contains('option') && next.style.display !== 'none') {
+                        hasVisible = true;
+                    }
+                    next = next.nextElementSibling;
+                }
+                title.style.display = hasVisible ? 'block' : 'none';
+            });
+        }
+
+        function selectCancer(cancer) {
+            state.cancer = cancer;
+            populateTests();
+            showStep(3);
+        }
+
+        function populateTests() {
+            const container = document.getElementById('testOptions');
+            const c = cancers[state.cancer];
+            container.innerHTML = '';
+
+            if (state.stage === 'risk') {
+                container.innerHTML = `
+                    <div class="option" onclick="selectTest('germline')">
+                        <span class="option-icon">🧬</span>
+                        <div class="option-title">Kalıtsal Test (Germline)</div>
+                        <div class="option-desc">Aile öyküsüne göre risk genleri</div>
+                        <div class="option-tags">
+                            ${c.germline.map(g => `<span class="tag">${g}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+            } else {
+                let html = `
+                    <div class="option" onclick="selectTest('somatic')">
+                        <span class="option-icon">🔬</span>
+                        <div class="option-title">Tümör Genetiği</div>
+                        <div class="option-desc">Tedavi seçenekleri için</div>
+                        <div class="option-tags">
+                            ${c.somatic.map(s => `<span class="tag">${s}</span>`).join('')}
+                        </div>
+                    </div>
+                `;
+                if (['lung_nsclc', 'colon', 'breast', 'prostate', 'bladder', 'renal_cell', 'head_neck', 'melanoma_cutaneous'].includes(state.cancer)) {
+                    html += `
+                        <div class="option" onclick="selectTest('liquid')">
+                            <span class="option-icon">💉</span>
+                            <div class="option-title">Sıvı Biyopsi</div>
+                            <div class="option-desc">Kandan tümör DNA analizi</div>
+                            <div class="option-tags"><span class="tag">Non-invaziv</span></div>
+                        </div>
+                    `;
+                }
+                container.innerHTML = html;
+            }
+        }
+
+        function selectTest(test) {
+            state.test = test;
+            populateLabs();
+            showStep(4);
+        }
+
+        function populateLabs() {
+            const container = document.getElementById('labOptions');
+            container.innerHTML = '';
+            selectedLabId = null;
+            document.getElementById('continueBtn').disabled = true;
+            
+            let suitableLabs = labs;
+            if (state.test === 'liquid') {
+                suitableLabs = labs.filter(l => l.tests.some(t => t.includes('Likit') || t.includes('Streptek')));
+            }
+            
+            suitableLabs.forEach(lab => {
+                const div = document.createElement('div');
+                div.className = 'lab-option';
+                div.onclick = () => selectLab(lab.id, div);
+                div.innerHTML = `
+                    <div class="lab-name">${lab.name}</div>
+                    <div class="lab-loc">📍 ${lab.loc}</div>
+                    <div class="lab-tests">
+                        ${lab.tests.slice(0, 3).map(t => `<span class="lab-test-tag">${t}</span>`).join('')}
+                    </div>
+                    <div class="lab-features">
+                        ${lab.features.map(f => `<span>⭐ ${f}</span>`).join('')}
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function selectLab(labId, element) {
+            document.querySelectorAll('.lab-option').forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedLabId = labId;
+            state.lab = labs.find(l => l.id === labId);
+            document.getElementById('continueBtn').disabled = false;
+        }
+
+        function goToSample() {
+            populateSampleInstructions();
+            showStep(5);
+        }
+
+        function populateSampleInstructions() {
+            const lab = state.lab;
+            const container = document.getElementById('sampleInstructions');
+            const alertBox = document.getElementById('sampleAlert');
+            const labDisplay = document.getElementById('selectedLabDisplay');
+            
+            labDisplay.innerHTML = `
+                <div class="selected-lab-info">
+                    <h4>Seçilen Laboratuvar</h4>
+                    <div class="lab-name-big">${lab.name}</div>
+                    <div style="margin-top: 8px; opacity: 0.9; font-size: 14px;">
+                        📞 ${lab.contact} | 📍 ${lab.loc}
+                    </div>
+                </div>
+            `;
+            
+            if (state.test === 'germline') {
+                container.innerHTML = `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>🩸</span>Kan Örneği (EDTA)</div>
+                        <ul class="sample-list">
+                            <li>Mor kapaklı EDTA tüp (2-5 ml)</li>
+                            <li>Açlık gerekmez</li>
+                            <li>Oda ısısında gönderim</li>
+                            <li>Sonuç süresi: 2-4 hafta</li>
+                        </ul>
+                    </div>
+                    ${lab.sampleTypes.includes('Tükürük') ? `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>💧</span>Tükürük Örneği</div>
+                        <ul class="sample-list">
+                            <li>Özel toplama kiti (labdan temin)</li>
+                            <li>Açlık gerekmez</li>
+                            <li>Evde toplanabilir</li>
+                            <li>Çocuklar için uygundur</li>
+                        </ul>
+                    </div>
+                    ` : ''}
+                `;
+                alertBox.innerHTML = '⚠️ Kalıtsal testler için kan örneği en güvenilir sonucu verir. ' + lab.name + ' ile iletişime geçerek örnek toplama kiti talep edebilirsiniz.';
+            } else if (state.test === 'somatic') {
+                container.innerHTML = `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>🧊</span>Parafin Blok (FFPE)</div>
+                        <ul class="sample-list">
+                            <li>Patoloji arşivinden temin edilir</li>
+                            <li>Tümör hücre oranı >20% olmalı</li>
+                            <li>5-10 blok gönderimi önerilir</li>
+                            <li>H&E boyalı slayt ekinde gönderilmeli</li>
+                        </ul>
+                    </div>
+                    ${lab.sampleTypes.includes('Taze Doku') ? `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>🔴</span>Taze Biyopsi</div>
+                        <ul class="sample-list">
+                            <li>Formaldehit içermeyen ortamda</li>
+                            <li>RNA analizi için uygundur</li>
+                            <li>Soğuk zincir gerekebilir</li>
+                            <li>Lab ile önceden iletişim kurun</li>
+                        </ul>
+                    </div>
+                    ` : ''}
+                `;
+                alertBox.innerHTML = '⚠️ ' + lab.name + ' için patoloji raporu ve H&E boyalı slayt da gönderilmelidir. Tümör içeriği düşük örneklerde test başarısız olabilir.';
+            } else {
+                container.innerHTML = `
+                    <div class="sample-box">
+                        <div class="sample-title"><span>💉</span>Sıvı Biyopsi - Streptek</div>
+                        <ul class="sample-list">
+                            <li>Özel cfDNA toplama tüpü (Streptek)</li>
+                            <li>2 tüp (her biri 10 ml) = Toplam 20 ml</li>
+                            <li>İnvaziv işlem gerekmez</li>
+                            <li>Tüp sallanmadan gönderilmeli</li>
+                            <li>Metastaz takibinde tekrarlanabilir</li>
+                        </ul>
+                    </div>
+                `;
+                alertBox.innerHTML = '⚠️ ' + lab.name + ' ile önceden iletişime geçerek Streptek tüp temin edin. Sıvı biyopsi tümör dokusuna ulaşılamadığında idealdir.';
+            }
+        }
+
+        function goToResults() {
+            populateResults();
+            showStep(6);
+        }
+
+        function populateResults() {
+            const container = document.getElementById('treatmentResults');
+            const c = cancers[state.cancer];
+            
+            if (state.test === 'germline') {
+                container.innerHTML = `
+                    <div class="treatment-card">
+                        <div class="treatment-title"><span>✅</span>Pozitif Bulgu (Örn: BRCA1/2)</div>
+                        <ul class="treatment-list">
+                            <li><strong>PARP İnhibitörleri:</strong> Olaparib, Niraparib (Yumurtalık kanseri)</li>
+                            <li><strong>Platin Bazlı Kemoterapi:</strong> Daha iyi yanıt olasılığı</li>
+                            <li><strong>Aile Taraması:</strong> Birinci derece akrabalar test edilmeli</li>
+                            <li><strong>Risk Azaltma:</strong> Artırılmış tarama veya profilaktik cerrahi</li>
+                        </ul>
+                    </div>
+                    <div class="treatment-card" style="border-left-color: #4caf50;">
+                        <div class="treatment-title" style="color: #4caf50;"><span>❌</span>Negatif / VUS</div>
+                        <ul class="treatment-list">
+                            <li>Standart tarama protokollerine devam edilir</li>
+                            <li>Aile öyküsü güçlüyse çok genli panel değerlendirilir</li>
+                            <li>VUS için biyoinformatik analiz yapılabilir</li>
+                        </ul>
+                    </div>
+                `;
+            } else if (state.test === 'somatic') {
+                const txs = c.treatments ? Object.entries(c.treatments) : [['Genetik Değişiklik Saptandı', 'Kişiselleştirilmiş hedefe yönelik tedavi']];
+                container.innerHTML = txs.map(([marker, treat]) => `
+                    <div class="treatment-card">
+                        <div class="treatment-title"><span>🎯</span>${marker}</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 8px; padding-left: 28px;">
+                            ${treat}
+                        </div>
+                    </div>
+                `).join('') + `
+                    <div class="treatment-card" style="border-left-color: #ff9800;">
+                        <div class="treatment-title" style="color: #ff9800;"><span>🔥</span>İmmünoterapi Uygunluğu</div>
+                        <div style="font-size: 14px; color: #555; margin-top: 8px;">
+                            <strong>TMB Yüksek:</strong> Yüksek mutasyon yükü = İmmünoterapiye daha iyi yanıt<br><br>
+                            <strong>MSI-H:</strong> Mikrosatellit instabilite durumunda PD-1 inhibitörleri ilk seçenektir
+                        </div>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="treatment-card">
+                        <div class="treatment-title"><span>📉</span>Sıvı Biyopsi İzlemi</div>
+                        <ul class="treatment-list">
+                            <li><strong>ctDNA Düşüşü:</strong> Tedaviye yanıt göstergesi</li>
+                            <li><strong>ctDNA Artışı:</strong> Progresyon / Rezistans belirtisi</li>
+                            <li><strong>Yeni Mutasyon:</strong> Tedavi değişikliği gerekliliği</li>
+                            <li><strong>MRD Pozitiflik:</strong> Rezidüel hastalık, adjuvan tedavi kararını etkiler</li>
+                        </ul>
+                    </div>
+                `;
+            }
+        }
+
+        function goBack(n) {
+            showStep(n);
+        }
+
+        function resetApp() {
+            state = { stage: null, cancer: null, test: null, lab: null };
+            selectedLabId = null;
+            document.getElementById('cancerSearch').value = '';
+            showStep(1);
+        }
+
+        showStep(1);
+    </script>
+</body>
+</html>
